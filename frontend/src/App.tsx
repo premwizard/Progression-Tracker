@@ -5,6 +5,7 @@ import { Register } from './components/auth/Register';
 import { GoalList } from './components/goals/GoalList';
 import { GoalDetail } from './components/goals/GoalDetail';
 import { TaskBoard } from './components/tasks/TaskBoard';
+import { Analytics } from './components/analytics/Analytics';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { api } from './services/api';
 import './App.css';
@@ -15,18 +16,21 @@ const AppContent: React.FC = () => {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [goals, setGoals] = useState<any[]>([]);
   const [tasks, setTasks] = useState<any[]>([]);
+  const [streak, setStreak] = useState(0);
 
   // Fetch summary data for the dashboard
   useEffect(() => {
     const fetchDashboardData = async () => {
       if (isAuthenticated && user) {
         try {
-          const [goalsData, tasksData] = await Promise.all([
+          const [goalsData, tasksData, analyticsSummary] = await Promise.all([
             api.get<any[]>('/goals'),
-            api.get<any[]>('/tasks')
+            api.get<any[]>('/tasks'),
+            api.get<any>('/analytics/summary')
           ]);
           setGoals(goalsData);
           setTasks(tasksData);
+          setStreak(analyticsSummary.streak_count);
         } catch (err) {
           console.error('Failed to fetch dashboard data:', err);
         }
@@ -76,6 +80,8 @@ const AppContent: React.FC = () => {
         );
       case 'tasks':
         return <TaskBoard />;
+      case 'analytics':
+        return <Analytics />;
       case 'dashboard':
         return (
           <div className="dashboard-view animate-fade-in">
@@ -101,25 +107,13 @@ const AppContent: React.FC = () => {
                   {totalTasksCount > 0 ? 'Click to manage your Kanban task board' : 'Add tasks to your goals to track them'}
                 </span>
               </div>
-              <div className="dashboard-card glass-panel" style={{ cursor: 'pointer' }} onClick={() => setView('tasks')}>
-                <h3>Task Completion Rate</h3>
-                <p className="card-value">{taskCompletionRate}%</p>
+              <div className="dashboard-card glass-panel" style={{ cursor: 'pointer' }} onClick={() => setView('analytics')}>
+                <h3>Daily Streak</h3>
+                <p className="card-value">🔥 {streak}</p>
                 <span className="card-desc">
-                  {totalTasksCount > 0 ? 'Success is built milestone by milestone.' : 'Set up tasks to check progression'}
+                  {streak > 0 ? 'Keep the fire burning! Complete a task daily.' : 'Complete a task today to start a streak'}
                 </span>
               </div>
-            </div>
-          </div>
-        );
-      case 'analytics':
-        return (
-          <div className="dashboard-view animate-fade-in">
-            <div className="welcome-banner glass-panel">
-              <h2>Analytics & Progression Insights</h2>
-              <p>Visualize your progress, velocity, and achievements over time.</p>
-            </div>
-            <div className="glass-panel" style={{ padding: 'var(--spacing-xl)', textAlign: 'center' }}>
-              <p>AI insights and progression charts are coming soon.</p>
             </div>
           </div>
         );
