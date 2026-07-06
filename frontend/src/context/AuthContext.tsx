@@ -8,7 +8,7 @@ export interface User {
   is_active: boolean;
 }
 
-export type ViewType = 'home' | 'login' | 'register' | 'dashboard' | 'goals' | 'tasks' | 'assistant' | 'analytics';
+export type ViewType = 'home' | 'login' | 'register' | 'dashboard' | 'goals' | 'tasks' | 'assistant' | 'integrations' | 'analytics';
 
 interface AuthContextType {
   user: User | null;

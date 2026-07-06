@@ -7,6 +7,7 @@ import { GoalDetail } from './components/goals/GoalDetail';
 import { TaskBoard } from './components/tasks/TaskBoard';
 import { Analytics } from './components/analytics/Analytics';
 import { AIAssistant } from './components/ai/AIAssistant';
+import { Integrations } from './components/integrations/Integrations';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { api } from './services/api';
 import './App.css';
@@ -82,6 +83,8 @@ const AppContent: React.FC = () => {
         return <Analytics />;
       case 'assistant':
         return <AIAssistant />;
+      case 'integrations':
+        return <Integrations />;
       case 'dashboard':
         return (
           <div className="dashboard-view animate-fade-in">

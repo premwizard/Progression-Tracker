@@ -43,6 +43,12 @@ export const Header: React.FC = () => {
               AI Planner
             </button>
             <button 
+              className={`nav-link-btn ${view === 'integrations' ? 'active' : ''}`}
+              onClick={() => setView('integrations')}
+            >
+              Connect
+            </button>
+            <button 
               className={`nav-link-btn ${view === 'analytics' ? 'active' : ''}`}
               onClick={() => setView('analytics')}
             >
