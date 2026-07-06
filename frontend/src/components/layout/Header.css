@@ -1,0 +1,51 @@
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin: var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-xl);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.logo h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.logo-icon {
+  font-size: 1.5rem;
+}
+
+.main-nav {
+  display: flex;
+  gap: var(--spacing-lg);
+}
+
+.main-nav a {
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.main-nav a:hover {
+  color: var(--primary);
+  background: rgba(var(--primary), 0.1);
+}
