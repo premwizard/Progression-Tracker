@@ -67,3 +67,4 @@ export function SkeletonPage({ rows = 4 }: { rows?: number }) {
     </div>
   );
 }
+

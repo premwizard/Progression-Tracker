@@ -12,7 +12,7 @@ import {
 // ── Animation Variants ──────────────────────────────────────────────
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 200, damping: 24 } },
+  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 200, damping: 24 } },
 };
 const stagger = (delay = 0.1) => ({
   hidden: { opacity: 0 },
@@ -586,3 +586,4 @@ export default function LandingPage() {
     </>
   );
 }
+

@@ -219,3 +219,4 @@ export const GoalDetail: React.FC<GoalDetailProps> = ({ goalId, onBack, onUpdate
   );
 };
 export default GoalDetail;
+

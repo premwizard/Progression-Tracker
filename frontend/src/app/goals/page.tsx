@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Target, Plus, Flame, ChevronRight, TrendingUp, CheckCircle2, Circle, Zap, BookOpen, Heart, Globe } from 'lucide-react';
 import { ProgressRing } from '../../components/ui/ProgressRing';
+import { CreateGoalModal } from '../../components/ui/CreateGoalModal';
 
 type GoalCategory = 'Engineering' | 'Career' | 'Health' | 'Language' | 'Finance' | 'Personal';
 
@@ -92,11 +93,12 @@ const containerVariants = {
 };
 const itemVariants = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
+  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } },
 };
 
 export default function GoalsPage() {
   const [expandedId, setExpandedId] = useState<string | null>('1');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const overallProgress = Math.round(MOCK_GOALS.reduce((acc, g) => acc + g.progress, 0) / MOCK_GOALS.length);
 
@@ -113,7 +115,7 @@ export default function GoalsPage() {
             <h1 className="text-4xl font-bold tracking-tight text-text-main">Your Goals</h1>
             <p className="mt-2 text-text-muted">{MOCK_GOALS.length} active goals · Keep the streak alive</p>
           </div>
-          <button className="inline-flex items-center space-x-2 px-5 py-2.5 text-sm font-semibold text-white rounded-xl bg-primary hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+          <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center space-x-2 px-5 py-2.5 text-sm font-semibold text-white rounded-xl bg-primary hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
             <Plus className="w-4 h-4" />
             <span>New Goal</span>
           </button>
@@ -215,6 +217,8 @@ export default function GoalsPage() {
           );
         })}
       </motion.div>
+      <CreateGoalModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={data => { console.log('Create goal', data); }} />
     </div>
   );
 }
+

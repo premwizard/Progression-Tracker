@@ -1,46 +1,70 @@
-# Progression Tracker Documentation
+# 🚀 Progression Tracker
 
-![Progression Tracker Logo](https://via.placeholder.com/800x200?text=Progression+Tracker)
+An AI-powered goal planning, progress tracking, and productivity intelligence platform built for serious achievers. Progression Tracker connects your goals, tasks, and streaks into a single unified system, powered by an AI coach that remembers everything.
 
-## Tagline
-**AI-Powered Goal Planning, Progress Tracking, Productivity Intelligence Platform**
+## ✨ Features
 
-## Overview
-Welcome to the documentation workspace for Progression Tracker. This repository contains the complete software requirements, system architecture, API specifications, and development guidelines required to build, maintain, and scale the application.
+- **Goal Tracking**: Set ambitious goals with milestones. Track real-time progress with automatic completion calculation.
+- **AI Coach**: Your personal AI coach analyzes your patterns, streaks, and progress to deliver personalized, context-aware recommendations.
+- **Data Analytics**: Visualize your growth over days, weeks, and months with interactive bar charts and a GitHub-style consistency heatmap.
+- **Streak Engine**: Never break the chain. Daily streak tracking that rewards consistency and builds momentum.
+- **Command Palette**: Press `⌘K` anywhere to instantly search across goals, create tasks, or navigate the application.
+- **Premium UI**: Crafted with React, Tailwind CSS, and Framer Motion for a fluid, glassmorphic, and highly responsive experience.
 
-## Tech Stack
-- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS, shadcn/ui, TanStack Query, Zustand, React Hook Form, Zod, Recharts, Framer Motion
-- **Backend**: FastAPI, Python 3.13+, SQLAlchemy, Alembic, Pydantic, Celery/ARQ, Redis, PostgreSQL, WebSockets
-- **AI**: LangGraph, PydanticAI, OpenAI-compatible models, MCP, AI Agents, Qdrant
-- **Mobile**: Flutter, Riverpod, Dio, Hive
-- **Infrastructure**: Docker, Docker Compose, GitHub Actions, Cloudflare, Vercel, Render, AWS
+## 🏗️ Architecture
 
-## Folder Structure
-All documentation is organized within the `/docs` directory sequentially.
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS v4, Framer Motion, Lucide Icons
+- **Backend**: Python 3.12, FastAPI, SQLAlchemy 2.0 (Async), PostgreSQL
+- **Mobile**: Flutter 3.44, Dart
+- **AI Integration**: Custom LangChain agents powered by Gemini 3.1 Pro (High)
+- **Deployment**: Docker, docker-compose
 
-## Quick Start
-To get started with development, please read:
-1. [Project Overview](01_Project_Overview.md)
-2. [System Architecture](04_System_Architecture.md)
-3. [API Design](06_API_Design.md)
+## 🚀 Getting Started
 
----
+### Prerequisites
+- Node.js 20+
+- Python 3.12+
+- Docker & Docker Compose
+- Flutter SDK (for mobile app)
 
-## Best Practices
+### Quick Start (Frontend Mock Mode)
+You can run the frontend immediately using our mock data engine:
 
-- Ensure strict adherence to the modular monolith architecture principles.
-- Code should be testable, scalable, and self-documenting.
-- Follow CI/CD guidelines for deployments and database migrations.
-- Always use asynchronous processing for long-running operations.
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Open `http://localhost:3000` to view the application.
 
-## Future Improvements
+### Full Stack Setup (API + Database)
+To run the full stack with the FastAPI backend and PostgreSQL database:
 
-- Transition specific heavy-load modules to independent microservices.
-- Introduce advanced caching strategies using Redis clusters.
-- Upgrade to newer major versions of the underlying AI agents as they become available.
+1. Copy `.env.example` to `.env` in the `backend/` directory.
+2. Start the services:
+```bash
+docker-compose up -d
+```
+3. The API will be available at `http://localhost:8000`. 
+4. API documentation (Swagger) is auto-generated at `http://localhost:8000/docs`.
 
-## References
-- [System Architecture](04_System_Architecture.md)
-- [Database Design](05_Database_Design.md)
-- [API Design](06_API_Design.md)
-- [AI Architecture](07_AI_Architecture.md)
+## 📂 Project Structure
+
+```
+.
+├── backend/          # FastAPI application
+│   ├── app/          # Core backend logic (auth, goals, analytics, ai)
+│   └── alembic/      # Database migrations
+├── frontend/         # Next.js frontend application
+│   ├── src/app/      # App Router pages (Dashboard, Goals, Tasks, etc)
+│   └── src/components/ # Shared UI components (CommandPalette, SkeletonLoader)
+├── mobile/           # Flutter native app (iOS & Android)
+└── Docs/             # Comprehensive project documentation
+```
+
+## 🎨 UI/UX Philosophy
+
+Progression Tracker uses a custom **Glassmorphism** design system with a refined color palette (`var(--color-bg-base)`, `var(--color-primary)`, `var(--color-accent)`). We rely heavily on micro-interactions and smooth transitions (`framer-motion`) to ensure the platform feels alive, responsive, and premium.
+
+## 📄 License
+This project is proprietary and confidential. All rights reserved.

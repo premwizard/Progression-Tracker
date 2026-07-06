@@ -88,7 +88,7 @@ export function CommandPalette({ onClose }: CommandPaletteProps) {
           initial={{ opacity: 0, scale: 0.96, y: -16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.96, y: -16 }}
-          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+          transition={{ type: 'spring' as const, stiffness: 400, damping: 30 }}
           onClick={e => e.stopPropagation()}
           className="w-full max-w-lg bg-bg-surface border border-border-subtle rounded-2xl shadow-2xl shadow-black/30 overflow-hidden"
         >
@@ -152,3 +152,4 @@ export function CommandPalette({ onClose }: CommandPaletteProps) {
     </AnimatePresence>
   );
 }
+

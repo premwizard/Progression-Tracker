@@ -168,3 +168,4 @@ export const GoalList: React.FC<GoalListProps> = ({ onSelectGoal, refreshTrigger
   );
 };
 export default GoalList;
+

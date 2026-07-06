@@ -180,7 +180,7 @@ export const Header: React.FC = () => {
                           initial={{ opacity: 0, y: 8, scale: 0.97 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                          transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                          transition={{ type: 'spring' as const, stiffness: 400, damping: 30 }}
                           className="absolute right-0 top-full mt-2 w-80 bg-bg-surface border border-border-subtle rounded-2xl shadow-xl shadow-black/10 overflow-hidden z-50"
                         >
                           <div className="flex items-center justify-between px-4 py-3 border-b border-border-subtle">
@@ -302,3 +302,4 @@ export const Header: React.FC = () => {
     </>
   );
 };
+
