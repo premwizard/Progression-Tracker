@@ -2,10 +2,7 @@ import type { Metadata } from 'next';
 import { AuthProvider } from '../context/AuthContext';
 import { Header } from '../components/layout/Header';
 import './globals.css';
-import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
-
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: 'Progression Tracker',
@@ -18,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
+    <html lang="en" className={cn("font-sans")}>
       <body className="min-h-screen bg-bg-base text-text-main font-sans selection:bg-primary/30 selection:text-primary">
         <AuthProvider>
           <Header />
