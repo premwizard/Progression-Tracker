@@ -54,9 +54,6 @@ const AppContent: React.FC = () => {
   const activeGoalsCount = goals.filter(g => g.status !== 'completed' && g.status !== 'archived').length;
   const totalTasksCount = tasks.length;
   const completedTasksCount = tasks.filter(t => t.status === 'completed').length;
-  const taskCompletionRate = totalTasksCount > 0
-    ? Math.round((completedTasksCount / totalTasksCount) * 100)
-    : 0;
 
   const renderContent = () => {
     switch (view) {
