@@ -1,10 +1,12 @@
 import uuid
 from datetime import datetime
-from sqlalchemy import String, ForeignKey, Float, DateTime
+
+from sqlalchemy import DateTime, Float, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base_model import Base
 from app.database.mixins import AuditMixin, SoftDeleteMixin, UUIDMixin
+
 
 class Goal(Base, UUIDMixin, AuditMixin, SoftDeleteMixin):
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("user.id"), nullable=False, index=True)

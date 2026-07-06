@@ -1,20 +1,21 @@
 import uuid
 from datetime import datetime, timezone
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.session import get_db
 from app.core.dependencies import get_current_active_user
-from app.models.user import User
-from app.models.goal import Goal, Task
+from app.database.session import get_db
 from app.goals import service as goal_service
 from app.integrations.schemas import (
+    GitHubWebhookPayload,
+    IntegrationLogResponse,
     IntegrationResponse,
     IntegrationToggleRequest,
-    IntegrationLogResponse,
-    GitHubWebhookPayload,
 )
+from app.models.goal import Goal, Task
+from app.models.user import User
 
 router = APIRouter()
 
@@ -97,7 +98,7 @@ async def toggle_integration(
 @router.get("/logs", response_model=list[IntegrationLogResponse])
 async def get_logs(current_user: User = Depends(get_current_active_user)):
     logs = get_user_logs(current_user.id)
-    return [IntegrationLogResponse(**l) for l in logs]
+    return [IntegrationLogResponse(**log) for log in logs]
 
 @router.post("/webhooks/github", response_model=IntegrationLogResponse)
 async def post_github_webhook(

@@ -1,16 +1,17 @@
 import uuid
 from typing import Any
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
-from sqlalchemy.orm import selectinload
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.session import get_db
+from fastapi import APIRouter, Depends, HTTPException, Response, status
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
+
 from app.core.dependencies import get_current_active_user
-from app.models.user import User
-from app.models.goal import Goal, Task
-from app.goals.schemas import TaskWithGoalResponse, TaskUpdate
+from app.database.session import get_db
 from app.goals import service as goal_service
+from app.goals.schemas import TaskUpdate, TaskWithGoalResponse
+from app.models.goal import Goal, Task
+from app.models.user import User
 
 router = APIRouter()
 
@@ -48,12 +49,12 @@ async def update_task(
     await goal_service.recalculate_goal_progress(db, task.goal_id)
     return updated_task
 
-@router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT, response_class=Response)
 async def delete_task(
     task_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_active_user)
-) -> Any:
+) -> Response:
     result = await db.execute(
         select(Task)
         .join(Goal)
@@ -66,4 +67,4 @@ async def delete_task(
     goal_id = task.goal_id
     await goal_service.delete_task(db, task)
     await goal_service.recalculate_goal_progress(db, goal_id)
-    return None
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

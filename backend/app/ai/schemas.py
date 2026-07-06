@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class AIChatRequest(BaseModel):
     message: str = Field(..., description="The chat message sent by the user")
 

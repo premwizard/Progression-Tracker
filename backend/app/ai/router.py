@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends
 from typing import Any
 
+from fastapi import APIRouter, Depends
+
+from app.ai.schemas import AIChatRequest, AIChatResponse, SuggestedGoal, SuggestedTask
 from app.core.dependencies import get_current_active_user
 from app.models.user import User
-from app.ai.schemas import AIChatRequest, AIChatResponse, SuggestedGoal, SuggestedTask
 
 router = APIRouter()
 

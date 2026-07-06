@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class WeeklyVelocityPoint(BaseModel):
     day: str = Field(..., description="Day abbreviation (e.g. Mon, Tue)")
     count: int = Field(..., description="Count of tasks completed on this day")

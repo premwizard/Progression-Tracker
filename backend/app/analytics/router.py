@@ -1,16 +1,19 @@
-import uuid
-from typing import Any
 from datetime import datetime, timedelta, timezone
+from typing import Any
+
 from fastapi import APIRouter, Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload
 
-from app.database.session import get_db
+from app.analytics.schemas import (
+    AnalyticsSummaryResponse,
+    PriorityBreakdown,
+    WeeklyVelocityPoint,
+)
 from app.core.dependencies import get_current_active_user
-from app.models.user import User
+from app.database.session import get_db
 from app.models.goal import Goal, Task
-from app.analytics.schemas import AnalyticsSummaryResponse, WeeklyVelocityPoint, PriorityBreakdown
+from app.models.user import User
 
 router = APIRouter()
 

@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class IntegrationResponse(BaseModel):
     name: str = Field(..., description="The name of the external service (e.g. github, slack, calendar)")
     description: str = Field(..., description="The description of the integration capabilities")

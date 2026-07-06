@@ -1,10 +1,12 @@
 import uuid
 from datetime import datetime, timezone
+
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.goal import Goal, Task
 from app.goals.schemas import GoalCreate, GoalUpdate, TaskCreate, TaskUpdate
+from app.models.goal import Goal, Task
+
 
 async def get_goals_for_user(db: AsyncSession, user_id: uuid.UUID) -> list[Goal]:
     result = await db.execute(

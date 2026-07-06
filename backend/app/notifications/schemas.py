@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class NotificationResponse(BaseModel):
     id: str = Field(..., description="Unique notification identifier")
     message: str = Field(..., description="The notification content text")
