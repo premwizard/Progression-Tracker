@@ -31,6 +31,12 @@ export const Header: React.FC = () => {
               Goals
             </button>
             <button 
+              className={`nav-link-btn ${view === 'tasks' ? 'active' : ''}`}
+              onClick={() => setView('tasks')}
+            >
+              Tasks
+            </button>
+            <button 
               className={`nav-link-btn ${view === 'analytics' ? 'active' : ''}`}
               onClick={() => setView('analytics')}
             >
