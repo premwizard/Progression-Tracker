@@ -26,3 +26,4 @@ class ProgressionTrackerApp extends StatelessWidget {
     );
   }
 }
+

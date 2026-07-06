@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import '../theme/app_theme.dart';
 
 class ProgressCard extends StatefulWidget {
@@ -46,13 +45,13 @@ class _ProgressCardState extends State<ProgressCard> with SingleTickerProviderSt
             color: theme.cardTheme.color,
             borderRadius: BorderRadius.circular(AppTheme.radiusXl),
             border: Border.all(
-              color: _isHovered ? theme.colorScheme.primary.withOpacity(0.3) : theme.colorScheme.outline,
+              color: _isHovered ? theme.colorScheme.primary.withValues(alpha: 0.3) : theme.colorScheme.outline,
               width: 1,
             ),
             boxShadow: _isHovered
                 ? [
                     BoxShadow(
-                      color: theme.colorScheme.primary.withOpacity(0.05),
+                      color: theme.colorScheme.primary.withValues(alpha: 0.05),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     )
@@ -75,15 +74,15 @@ class _ProgressCardState extends State<ProgressCard> with SingleTickerProviderSt
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
-                            margin: const EdgeInsets.bottom(8),
+                            margin: const EdgeInsets.only(bottom: 8), // Fixed: was EdgeInsets.bottom()
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.outline.withOpacity(0.5),
+                              color: theme.colorScheme.outline.withValues(alpha: 0.5),
                               borderRadius: BorderRadius.circular(999),
                             ),
                             child: Text(
                               widget.category,
                               style: theme.textTheme.labelSmall?.copyWith(
-                                color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                                color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                               ),
                             ),
                           ),
@@ -104,16 +103,16 @@ class _ProgressCardState extends State<ProgressCard> with SingleTickerProviderSt
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: _isHovered ? theme.colorScheme.primary.withOpacity(0.05) : theme.scaffoldBackgroundColor,
+                        color: _isHovered ? theme.colorScheme.primary.withValues(alpha: 0.05) : theme.scaffoldBackgroundColor,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: _isHovered ? theme.colorScheme.primary.withOpacity(0.3) : theme.colorScheme.outline,
+                          color: _isHovered ? theme.colorScheme.primary.withValues(alpha: 0.3) : theme.colorScheme.outline,
                         ),
                       ),
                       child: Icon(
-                        LucideIcons.target,
+                        Icons.track_changes_rounded, // lucide: target
                         size: 20,
-                        color: _isHovered ? theme.colorScheme.primary : theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                        color: _isHovered ? theme.colorScheme.primary : theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -131,7 +130,7 @@ class _ProgressCardState extends State<ProgressCard> with SingleTickerProviderSt
                     Row(
                       children: [
                         if (widget.streak > 0) ...[
-                          Icon(LucideIcons.flame, size: 16, color: theme.colorScheme.secondary),
+                          Icon(Icons.local_fire_department_rounded, size: 16, color: theme.colorScheme.secondary), // lucide: flame
                           const SizedBox(width: 6),
                           Text(
                             '${widget.streak} Days',
@@ -144,7 +143,7 @@ class _ProgressCardState extends State<ProgressCard> with SingleTickerProviderSt
                         Text(
                           widget.isCompleted ? 'Completed' : 'In Progress',
                           style: theme.textTheme.labelMedium?.copyWith(
-                            color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                            color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                           ),
                         ),
                       ],
@@ -155,9 +154,9 @@ class _ProgressCardState extends State<ProgressCard> with SingleTickerProviderSt
                       children: [
                         Container(
                           width: 96, // w-24 equivalent
-                          height: 8, // h-2 equivalent
+                          height: 8,  // h-2 equivalent
                           decoration: BoxDecoration(
-                            color: theme.colorScheme.outline.withOpacity(0.5),
+                            color: theme.colorScheme.outline.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(999),
                           ),
                           child: FractionallySizedBox(
@@ -192,3 +191,4 @@ class _ProgressCardState extends State<ProgressCard> with SingleTickerProviderSt
     );
   }
 }
+

@@ -15,10 +15,10 @@ class StreakBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: colorScheme.primary.withOpacity(0.15),
+        color: colorScheme.primary.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: colorScheme.primary.withOpacity(0.3),
+          color: colorScheme.primary.withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -43,3 +43,4 @@ class StreakBadge extends StatelessWidget {
     );
   }
 }
+

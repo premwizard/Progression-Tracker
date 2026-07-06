@@ -29,3 +29,4 @@ class HiveStorage {
     await box.clear();
   }
 }
+

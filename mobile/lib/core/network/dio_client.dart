@@ -32,3 +32,4 @@ class DioClient {
 
   Dio get dio => _dio;
 }
+

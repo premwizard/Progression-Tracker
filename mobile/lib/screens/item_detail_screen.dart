@@ -127,7 +127,7 @@ class ItemDetailScreen extends StatelessWidget {
                             dotData: FlDotData(show: false),
                             belowBarData: BarAreaData(
                               show: true,
-                              color: colorScheme.primary.withOpacity(0.1),
+                              color: colorScheme.primary.withValues(alpha: 0.1),
                             ),
                           ),
                         ],
@@ -183,7 +183,7 @@ class ItemDetailScreen extends StatelessWidget {
               Container(
                 width: 2,
                 height: 40,
-                color: colorScheme.outline.withOpacity(0.5),
+                color: colorScheme.outline.withValues(alpha: 0.5),
               ),
             ],
           ),
@@ -200,7 +200,7 @@ class ItemDetailScreen extends StatelessWidget {
                 Text(
                   time,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: colorScheme.onBackground.withOpacity(0.5),
+                    color: colorScheme.onSurface.withValues(alpha: 0.5),
                   ),
                 ),
               ],
@@ -211,3 +211,4 @@ class ItemDetailScreen extends StatelessWidget {
     );
   }
 }
+

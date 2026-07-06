@@ -50,7 +50,7 @@ class AppTheme {
         scrolledUnderElevation: 0,
       ),
       cardTheme: CardThemeData(
-        color: darkBgSurface.withOpacity(0.8), // Glass feel approx
+        color: darkBgSurface.withValues(alpha: 0.8), // Glass feel approx
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radiusXl),
@@ -80,7 +80,7 @@ class AppTheme {
         scrolledUnderElevation: 0,
       ),
       cardTheme: CardThemeData(
-        color: lightBgSurface.withOpacity(0.8), // Glass feel approx
+        color: lightBgSurface.withValues(alpha: 0.8), // Glass feel approx
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(radiusXl),
@@ -115,3 +115,4 @@ class AppTheme {
     );
   }
 }
+

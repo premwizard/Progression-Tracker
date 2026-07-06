@@ -79,7 +79,7 @@ class _ProgressRingState extends State<ProgressRing> with SingleTickerProviderSt
                   progress: _animation.value,
                   strokeWidth: widget.strokeWidth,
                   color: ringColor,
-                  backgroundColor: Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                  backgroundColor: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
                 ),
               );
             },
@@ -154,3 +154,4 @@ class _ProgressRingPainter extends CustomPainter {
            oldDelegate.strokeWidth != strokeWidth;
   }
 }
+

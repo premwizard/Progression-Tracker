@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import '../theme/app_theme.dart';
 import '../widgets/progress_card.dart';
 import '../widgets/progress_ring.dart';
@@ -26,10 +25,10 @@ class DashboardScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header
+              // Header label
               Row(
                 children: [
-                  Icon(LucideIcons.layoutDashboard, size: 20, color: theme.colorScheme.primary),
+                  Icon(Icons.dashboard_outlined, size: 20, color: theme.colorScheme.primary), // lucide: layout-dashboard
                   const SizedBox(width: 8),
                   Text(
                     'DASHBOARD',
@@ -52,7 +51,7 @@ class DashboardScreen extends StatelessWidget {
               Text(
                 "You're currently tracking 4 active goals. You have a 24-day streak on Marathon Training. Keep the momentum going.",
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                  color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                   height: 1.5,
                 ),
               ),
@@ -83,7 +82,7 @@ class DashboardScreen extends StatelessWidget {
                           Text(
                             'Across all active items',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                              color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                             ),
                           ),
                         ],
@@ -95,7 +94,7 @@ class DashboardScreen extends StatelessWidget {
               
               const SizedBox(height: AppTheme.spacingXl),
               
-              // Main Grid Section
+              // Active Tracks Section Header
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -105,7 +104,7 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {},
-                    icon: const Icon(LucideIcons.plus, size: 16, color: Colors.white),
+                    icon: const Icon(Icons.add, size: 16, color: Colors.white), // lucide: plus
                     label: const Text('New Track', style: TextStyle(color: Colors.white)),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: theme.colorScheme.primary,
@@ -115,7 +114,7 @@ class DashboardScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppTheme.radiusLg),
                       ),
                       elevation: 4,
-                      shadowColor: theme.colorScheme.primary.withOpacity(0.4),
+                      shadowColor: theme.colorScheme.primary.withValues(alpha: 0.4),
                     ),
                   ),
                 ],
@@ -123,7 +122,7 @@ class DashboardScreen extends StatelessWidget {
               
               const SizedBox(height: AppTheme.spacingLg),
               
-              // Grid (ListView on mobile)
+              // Cards List (1-col on mobile)
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -132,7 +131,7 @@ class DashboardScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = mockData[index];
                   return SizedBox(
-                    height: 200, // Fixed height to match card aspect ratio
+                    height: 200,
                     child: ProgressCard(
                       id: item['id'] as String,
                       title: item['title'] as String,
@@ -182,10 +181,14 @@ class DashboardScreen extends StatelessWidget {
                                 width: 40,
                                 height: 40,
                                 decoration: BoxDecoration(
-                                  color: theme.colorScheme.primary.withOpacity(0.1),
+                                  color: theme.colorScheme.primary.withValues(alpha: 0.1),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(LucideIcons.activity, size: 20, color: theme.colorScheme.primary),
+                                child: Icon(
+                                  Icons.show_chart_rounded, // lucide: activity
+                                  size: 20,
+                                  color: theme.colorScheme.primary,
+                                ),
                               ),
                               const SizedBox(width: 16),
                               Expanded(
@@ -214,14 +217,18 @@ class DashboardScreen extends StatelessWidget {
                                     Text(
                                       'in React Advanced Patterns • 2 hours ago',
                                       style: theme.textTheme.bodySmall?.copyWith(
-                                        color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                                        color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               const SizedBox(width: 8),
-                              Icon(LucideIcons.chevronRight, size: 20, color: theme.textTheme.bodySmall?.color?.withOpacity(0.7)),
+                              Icon(
+                                Icons.chevron_right_rounded, // lucide: chevron-right
+                                size: 20,
+                                color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                              ),
                             ],
                           ),
                         ),
@@ -239,3 +246,4 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 }
+
