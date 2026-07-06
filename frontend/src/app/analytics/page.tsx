@@ -1,26 +1,229 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity } from 'lucide-react';
+import { Activity, TrendingUp, Flame, Target, Calendar, ArrowUp, ArrowDown, Minus, Zap } from 'lucide-react';
+import { ProgressRing } from '../../components/ui/ProgressRing';
+
+const WEEKLY_DATA = [
+  { day: 'Mon', tasks: 4, minutes: 65 },
+  { day: 'Tue', tasks: 6, minutes: 90 },
+  { day: 'Wed', tasks: 3, minutes: 45 },
+  { day: 'Thu', tasks: 7, minutes: 110 },
+  { day: 'Fri', tasks: 5, minutes: 80 },
+  { day: 'Sat', tasks: 8, minutes: 130 },
+  { day: 'Sun', tasks: 2, minutes: 30 },
+];
+
+const GOALS_PROGRESS = [
+  { title: 'React Advanced Patterns', progress: 68, trend: +5, category: 'Engineering', color: 'bg-blue-500' },
+  { title: 'System Design Interview', progress: 34, trend: +8, category: 'Career', color: 'bg-purple-500' },
+  { title: 'Marathon Training', progress: 85, trend: +3, category: 'Health', color: 'bg-emerald-500' },
+  { title: 'French A2 Level', progress: 15, trend: -2, category: 'Language', color: 'bg-orange-500' },
+];
+
+const STREAK_HEATMAP = Array.from({ length: 52 }, (_, week) =>
+  Array.from({ length: 7 }, (_, day) => {
+    const rand = Math.random();
+    if (week > 48) return rand > 0.3 ? Math.ceil(rand * 4) : 0;
+    if (week > 40) return rand > 0.4 ? Math.ceil(rand * 3) : 0;
+    return rand > 0.55 ? Math.ceil(rand * 2) : 0;
+  })
+);
+
+const HEAT_COLORS = [
+  'bg-border-subtle/30',
+  'bg-primary/20',
+  'bg-primary/40',
+  'bg-primary/70',
+  'bg-primary',
+];
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.08 } },
+};
+const itemVariants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
+};
+
+const maxTasks = Math.max(...WEEKLY_DATA.map(d => d.tasks));
+const maxMinutes = Math.max(...WEEKLY_DATA.map(d => d.minutes));
+
+function TrendBadge({ value }: { value: number }) {
+  if (value > 0) return (
+    <span className="flex items-center gap-0.5 text-xs font-medium text-emerald-500">
+      <ArrowUp className="w-3 h-3" />+{value}%
+    </span>
+  );
+  if (value < 0) return (
+    <span className="flex items-center gap-0.5 text-xs font-medium text-red-500">
+      <ArrowDown className="w-3 h-3" />{value}%
+    </span>
+  );
+  return <span className="flex items-center gap-0.5 text-xs font-medium text-text-muted"><Minus className="w-3 h-3" />0%</span>;
+}
 
 export default function AnalyticsPage() {
+  const [barMode, setBarMode] = useState<'tasks' | 'minutes'>('tasks');
+
+  const totalTasksThisWeek = WEEKLY_DATA.reduce((a, d) => a + d.tasks, 0);
+  const totalMinutesThisWeek = WEEKLY_DATA.reduce((a, d) => a + d.minutes, 0);
+  const avgProgress = Math.round(GOALS_PROGRESS.reduce((a, g) => a + g.progress, 0) / GOALS_PROGRESS.length);
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-center"
-      >
-        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-6 rounded-2xl bg-primary/10">
-          <Activity className="w-8 h-8 text-primary" />
+    <div className="max-w-5xl px-4 py-12 mx-auto space-y-10">
+      {/* Header */}
+      <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
+        <div className="flex items-center space-x-2 text-primary mb-2">
+          <Activity className="w-5 h-5" />
+          <span className="font-semibold tracking-wider uppercase text-sm">Analytics</span>
         </div>
-        <h1 className="text-3xl font-bold tracking-tight text-text-main sm:text-4xl">
-          Analytics
-        </h1>
-        <p className="max-w-md mx-auto mt-4 text-text-muted">
-          The legacy Analytics module is currently being migrated to the new Next.js App Router and Tailwind styling system. Check back soon!
-        </p>
+        <h1 className="text-4xl font-bold tracking-tight text-text-main">Your Progress Insights</h1>
+        <p className="mt-2 text-text-muted">Last 7 days · Updated in real time</p>
+      </motion.div>
+
+      {/* KPI cards */}
+      <motion.div variants={containerVariants} initial="hidden" animate="show" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {[
+          { icon: <Target className="w-5 h-5" />,   label: 'Tasks completed', value: totalTasksThisWeek,          sub: '+3 vs last week',  positive: true },
+          { icon: <Zap className="w-5 h-5" />,       label: 'Focus minutes',   value: `${totalMinutesThisWeek}m`,  sub: '+22m vs last week', positive: true },
+          { icon: <Flame className="w-5 h-5" />,     label: 'Best streak',     value: '24 days',                   sub: 'Marathon Training', positive: true },
+          { icon: <TrendingUp className="w-5 h-5" />, label: 'Avg progress',   value: `${avgProgress}%`,           sub: '+5% this week',     positive: true },
+        ].map(kpi => (
+          <motion.div key={kpi.label} variants={itemVariants}
+            className="p-5 glass rounded-2xl border border-border-subtle hover:border-primary/30 transition-colors"
+          >
+            <div className="flex items-center justify-between mb-3">
+              <div className="p-2 rounded-xl bg-primary/10 text-primary">{kpi.icon}</div>
+              <span className={`text-xs font-medium ${kpi.positive ? 'text-emerald-500' : 'text-red-500'}`}>{kpi.sub}</span>
+            </div>
+            <p className="text-2xl font-bold text-text-main">{kpi.value}</p>
+            <p className="mt-0.5 text-xs text-text-muted">{kpi.label}</p>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Weekly activity chart */}
+      <motion.div variants={itemVariants} initial="hidden" animate="show" className="p-6 glass rounded-2xl border border-border-subtle">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-lg font-semibold text-text-main">Weekly Activity</h2>
+            <p className="text-sm text-text-muted">Tasks completed & focus time</p>
+          </div>
+          <div className="flex gap-1 p-1 rounded-lg bg-bg-base border border-border-subtle">
+            {(['tasks', 'minutes'] as const).map(m => (
+              <button
+                key={m}
+                onClick={() => setBarMode(m)}
+                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${barMode === m ? 'bg-primary text-white shadow-sm' : 'text-text-muted hover:text-text-main'}`}
+              >
+                {m === 'tasks' ? 'Tasks' : 'Minutes'}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-end gap-2 h-40">
+          {WEEKLY_DATA.map((d, i) => {
+            const value = barMode === 'tasks' ? d.tasks : d.minutes;
+            const max = barMode === 'tasks' ? maxTasks : maxMinutes;
+            const heightPct = (value / max) * 100;
+            const isToday = i === 5; // Saturday = "today" in mock data
+            return (
+              <div key={d.day} className="flex-1 flex flex-col items-center gap-1 group">
+                <span className="text-xs font-medium text-text-muted opacity-0 group-hover:opacity-100 transition-opacity">{value}</span>
+                <div className="w-full flex items-end" style={{ height: '120px' }}>
+                  <motion.div
+                    initial={{ height: 0 }}
+                    animate={{ height: `${heightPct}%` }}
+                    transition={{ duration: 0.6, delay: i * 0.06, ease: 'easeOut' }}
+                    className={`w-full rounded-t-lg transition-colors ${isToday ? 'bg-primary' : 'bg-primary/30 group-hover:bg-primary/60'}`}
+                  />
+                </div>
+                <span className={`text-xs ${isToday ? 'font-semibold text-primary' : 'text-text-muted'}`}>{d.day}</span>
+              </div>
+            );
+          })}
+        </div>
+      </motion.div>
+
+      {/* Goals breakdown */}
+      <motion.div variants={itemVariants} initial="hidden" animate="show" className="p-6 glass rounded-2xl border border-border-subtle">
+        <h2 className="text-lg font-semibold text-text-main mb-1">Goals Breakdown</h2>
+        <p className="text-sm text-text-muted mb-6">Progress this week vs. last week</p>
+        <div className="space-y-5">
+          {GOALS_PROGRESS.map((g, i) => (
+            <div key={g.title}>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <div className={`w-2.5 h-2.5 rounded-full ${g.color}`} />
+                  <span className="text-sm font-medium text-text-main">{g.title}</span>
+                  <span className="text-xs text-text-muted hidden sm:inline">{g.category}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <TrendBadge value={g.trend} />
+                  <span className="text-sm font-bold text-text-main">{g.progress}%</span>
+                </div>
+              </div>
+              <div className="w-full h-2 rounded-full bg-border-subtle/50">
+                <motion.div
+                  className={`h-full rounded-full ${g.color}`}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${g.progress}%` }}
+                  transition={{ duration: 0.8, delay: i * 0.1, ease: 'easeOut' }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Activity heatmap */}
+      <motion.div variants={itemVariants} initial="hidden" animate="show" className="p-6 glass rounded-2xl border border-border-subtle">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-lg font-semibold text-text-main">Activity Heatmap</h2>
+            <p className="text-sm text-text-muted">Your consistency over the last 12 months</p>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-text-muted">
+            <span>Less</span>
+            {HEAT_COLORS.map((c, i) => (
+              <div key={i} className={`w-3 h-3 rounded-sm ${c}`} />
+            ))}
+            <span>More</span>
+          </div>
+        </div>
+        <div className="flex gap-1 overflow-x-auto pb-2">
+          {STREAK_HEATMAP.map((week, wi) => (
+            <div key={wi} className="flex flex-col gap-1">
+              {week.map((intensity, di) => (
+                <div
+                  key={di}
+                  className={`w-3 h-3 rounded-sm cursor-default transition-opacity hover:opacity-70 ${HEAT_COLORS[intensity]}`}
+                  title={`${intensity > 0 ? `${intensity} activity level` : 'No activity'}`}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between mt-3 text-xs text-text-muted">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
+          <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+        </div>
+      </motion.div>
+
+      {/* Overall ring summary */}
+      <motion.div variants={itemVariants} initial="hidden" animate="show"
+        className="flex flex-wrap items-center justify-around gap-6 p-6 glass rounded-2xl border border-border-subtle"
+      >
+        {GOALS_PROGRESS.map(g => (
+          <div key={g.title} className="flex flex-col items-center gap-2">
+            <ProgressRing progress={g.progress} size={72} strokeWidth={7} />
+            <p className="text-xs text-center text-text-muted max-w-[80px] leading-tight">{g.title}</p>
+          </div>
+        ))}
       </motion.div>
     </div>
   );
