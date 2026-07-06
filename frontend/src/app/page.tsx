@@ -1,139 +1,126 @@
 "use client";
 
+import React from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Plus, Activity, LayoutDashboard, ChevronRight } from 'lucide-react';
-import { ProgressCard } from '../components/ui/ProgressCard';
-import { ProgressRing } from '../components/ui/ProgressRing';
+import { Rocket, Target, Activity, BrainCircuit, ArrowRight } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
-const MOCK_DATA = [
-  {
-    id: '1',
-    title: 'React Advanced Patterns',
-    category: 'Engineering',
-    progress: 68,
-    streak: 12,
-  },
-  {
-    id: '2',
-    title: 'System Design Interview',
-    category: 'Career',
-    progress: 34,
-    streak: 3,
-  },
-  {
-    id: '3',
-    title: 'Marathon Training',
-    category: 'Health',
-    progress: 85,
-    streak: 24,
-  },
-  {
-    id: '4',
-    title: 'French A2 Level',
-    category: 'Language',
-    progress: 15,
-    streak: 0,
+export default function LandingPage() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  // If already authenticated, redirect to dashboard
+  if (isAuthenticated) {
+    router.push('/dashboard');
+    return null;
   }
-];
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
     }
-  }
-};
+  };
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } }
-};
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
+  };
 
-export default function DashboardPage() {
   return (
-    <div className="max-w-6xl px-4 py-12 mx-auto space-y-12">
-      {/* Header & Global Summary */}
-      <motion.div 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between"
-      >
-        <div>
-          <div className="flex items-center space-x-2 text-primary mb-2">
-            <LayoutDashboard className="w-5 h-5" />
-            <span className="font-semibold tracking-wider uppercase text-sm">Dashboard</span>
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight text-text-main md:text-5xl">
-            Welcome back, Alex.
-          </h1>
-          <p className="mt-4 text-lg text-text-muted max-w-xl">
-            You're currently tracking 4 active goals. You have a 24-day streak on Marathon Training. Keep the momentum going.
-          </p>
-        </div>
-
-        {/* Global Progress Widget */}
-        <div className="flex items-center p-6 space-x-6 glass rounded-2xl w-full md:w-auto">
-          <ProgressRing progress={54} size={80} strokeWidth={8} />
-          <div>
-            <h3 className="text-lg font-semibold text-text-main">Overall Progress</h3>
-            <p className="text-sm text-text-muted mt-1">Across all active items</p>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* Main Grid Section */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-semibold text-text-main">Active Tracks</h2>
-          <button className="flex items-center px-4 py-2 space-x-2 text-sm font-medium text-white transition-colors rounded-lg bg-primary hover:bg-primary-hover shadow-lg shadow-primary/20 cursor-pointer">
-            <Plus className="w-4 h-4" />
-            <span>New Track</span>
-          </button>
-        </div>
-
-        <motion.div 
-          variants={containerVariants}
+    <div className="flex flex-col min-h-[90vh]">
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center flex-1 px-4 py-20 text-center sm:px-6 lg:px-8">
+        <motion.div
           initial="hidden"
           animate="show"
-          className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2"
+          variants={containerVariants}
+          className="max-w-4xl mx-auto space-y-8"
         >
-          {MOCK_DATA.map((item) => (
-            <motion.div key={item.id} variants={itemVariants}>
-              <ProgressCard {...item} />
-            </motion.div>
-          ))}
-        </motion.div>
-      </div>
+          <motion.div variants={itemVariants} className="flex justify-center">
+            <div className="inline-flex items-center px-4 py-2 space-x-2 text-sm font-medium rounded-full bg-primary/10 text-primary border border-primary/20">
+              <Rocket className="w-4 h-4" />
+              <span>Progression Tracker v2.0 is live</span>
+            </div>
+          </motion.div>
 
-      {/* Recent Activity Feed */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="space-y-6"
-      >
-        <h2 className="text-2xl font-semibold text-text-main">Recent Activity</h2>
-        <div className="p-1 glass rounded-2xl">
-          <div className="divide-y divide-border-subtle">
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} className="flex items-center p-5 transition-colors hover:bg-bg-base/50">
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 mr-4">
-                  <Activity className="w-5 h-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-text-main">
-                    Completed milestone <span className="text-primary font-semibold">"Understanding Hooks"</span>
-                  </p>
-                  <p className="text-xs text-text-muted mt-1">in React Advanced Patterns • 2 hours ago</p>
-                </div>
-                <ChevronRight className="w-5 h-5 text-text-muted" />
-              </div>
-            ))}
+          <motion.h1 variants={itemVariants} className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl text-text-main">
+            Master your potential, <br className="hidden sm:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              one step at a time.
+            </span>
+          </motion.h1>
+
+          <motion.p variants={itemVariants} className="max-w-2xl mx-auto text-lg sm:text-xl text-text-muted">
+            The ultimate tool to track skills, habits, and project milestones. Visualize your growth, maintain your streaks, and achieve your goals with data-driven insights.
+          </motion.p>
+
+          <motion.div variants={itemVariants} className="flex flex-col items-center justify-center pt-8 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
+            <Link 
+              href="/register" 
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white transition-all rounded-xl bg-primary hover:bg-primary-hover shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 active:scale-[0.98]"
+            >
+              Start Tracking Free
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+            
+            <Link 
+              href="/login" 
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold transition-all border shadow-sm rounded-xl text-text-main bg-bg-base border-border-subtle hover:bg-border-subtle/50 active:scale-[0.98]"
+            >
+              Sign In
+            </Link>
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Feature Highlight Section */}
+      <section className="px-4 py-20 bg-bg-base/50 sm:px-6 lg:px-8 border-t border-border-subtle">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
+            {[
+              {
+                title: 'Goal Tracking',
+                description: 'Set ambitious goals and break them down into actionable tasks.',
+                icon: Target,
+              },
+              {
+                title: 'Data-Driven Analytics',
+                description: 'Visualize your progress over time with beautiful, insightful charts.',
+                icon: Activity,
+              },
+              {
+                title: 'AI Assistant',
+                description: 'Get personalized insights and planning help from your AI coach.',
+                icon: BrainCircuit,
+              }
+            ].map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <motion.div 
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="p-8 transition-all border shadow-sm glass-panel rounded-2xl border-border-subtle hover:border-primary/50 hover:shadow-md"
+                >
+                  <div className="flex items-center justify-center w-12 h-12 mb-6 rounded-xl bg-primary/10">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <h3 className="mb-3 text-xl font-semibold text-text-main">{feature.title}</h3>
+                  <p className="text-text-muted">{feature.description}</p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
-      </motion.div>
+      </section>
     </div>
   );
 }
