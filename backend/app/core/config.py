@@ -1,4 +1,4 @@
-from typing import List, Union
+from typing import List, Union, Any
 
 from pydantic import AnyHttpUrl, root_validator, validator
 from pydantic_settings import BaseSettings
@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
 
     @root_validator(skip_on_failure=True)
-    def validate_secrets(cls, values: dict[str, any]) -> dict[str, any]:
+    def validate_secrets(cls, values: dict[str, Any]) -> dict[str, Any]:
         env = values.get("ENVIRONMENT", "development")
         secret_key = values.get("SECRET_KEY", "SUPER_SECRET_KEY_PLEASE_CHANGE")
         if env == "production" and secret_key == "SUPER_SECRET_KEY_PLEASE_CHANGE":

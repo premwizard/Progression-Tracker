@@ -54,7 +54,7 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         await db.refresh(db_obj)
         return db_obj
 
-    async def remove(self, db: AsyncSession, *, id: Any) -> ModelType:
+    async def remove(self, db: AsyncSession, *, id: Any) -> Optional[ModelType]:
         obj = await self.get(db, id=id)
         if obj:
             await db.delete(obj)

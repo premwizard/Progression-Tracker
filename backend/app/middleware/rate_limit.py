@@ -18,7 +18,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         super().__init__(app)
         self.limit = requests_limit
         self.window = window_seconds
-        self.memory_store = {}
+        self.memory_store: dict[str, list[float]] = {}
+        self.redis_client: redis.Redis | None = None
         
         try:
             self.redis_client = redis.from_url(redis_url, decode_responses=True)
