@@ -42,6 +42,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         if self.use_redis:
             try:
                 key = f"ratelimit:{client_ip}"
+                assert self.redis_client is not None
                 pipe = self.redis_client.pipeline()
                 pipe.zremrangebyscore(key, 0, now - self.window)
                 pipe.zadd(key, {str(now): now})

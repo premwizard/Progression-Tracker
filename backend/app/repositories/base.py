@@ -15,7 +15,7 @@ class BaseRepository(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self.model = model
 
     async def get(self, db: AsyncSession, id: Any) -> Optional[ModelType]:
-        result = await db.execute(select(self.model).filter(self.model.id == id))
+        result = await db.execute(select(self.model).filter(getattr(self.model, "id") == id))
         return result.scalars().first()
 
     async def get_multi(
