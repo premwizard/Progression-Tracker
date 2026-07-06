@@ -74,7 +74,7 @@ export const AIAssistant: React.FC = () => {
         suggestedGoals: response.suggested_goals
       };
       setMessages(prev => [...prev, coachMessage]);
-    } catch (err) {
+    } catch {
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         sender: 'coach',
@@ -96,7 +96,7 @@ export const AIAssistant: React.FC = () => {
       });
       // Redirect to goals board
       setView('goals');
-    } catch (err) {
+    } catch {
       alert('Failed to implement suggested goal plan.');
     } finally {
       setSubmittingGoalId(null);
