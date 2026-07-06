@@ -23,22 +23,40 @@ export const Header: React.FC = () => {
   
   const dropdownRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  // Track consecutive failures to implement backoff
+  const failCount = useRef(0);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const fetchNotifications = useCallback(async () => {
-    if (isAuthenticated) {
-      try {
-        const data = await api.get<NotificationItem[]>('/notifications');
-        setNotifications(data);
-      } catch (err) {
-        console.error('Failed to fetch notifications:', err);
+    if (!isAuthenticated) return;
+    try {
+      const data = await api.get<NotificationItem[]>('/notifications');
+      setNotifications(data ?? []);
+      failCount.current = 0; // reset on success
+    } catch (err) {
+      // TypeError means backend is unreachable (not running / network down).
+      // Suppress noisy console spam — just silently back off.
+      if (err instanceof TypeError) {
+        failCount.current += 1;
+        // After 3 failures, stop polling entirely to avoid flooding the console
+        if (failCount.current >= 3 && intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        return;
       }
+      // For real API errors (4xx / 5xx) log them once
+      console.warn('[Notifications] API error:', err);
     }
   }, [isAuthenticated]);
 
   useEffect(() => {
+    failCount.current = 0;
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
+    intervalRef.current = setInterval(fetchNotifications, 30000);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, [fetchNotifications]);
 
   useEffect(() => {
