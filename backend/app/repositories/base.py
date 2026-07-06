@@ -1,8 +1,8 @@
 from typing import Any, Dict, Generic, List, Optional, Type, TypeVar, Union
 
+from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import BaseModel
 
 from app.database.base_model import Base
 

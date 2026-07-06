@@ -13,6 +13,7 @@ select = ["E", "F", "I"]
 
 [tool.mypy]
 python_version = "3.13"
-warn_return_any = True
-warn_unused_configs = True
+warn_return_any = true
+warn_unused_configs = true
 plugins = ["pydantic.mypy"]
+

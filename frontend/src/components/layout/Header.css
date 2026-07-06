@@ -34,18 +34,48 @@
 
 .main-nav {
   display: flex;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
-.main-nav a {
+.nav-link-btn {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
   font-weight: 500;
   color: var(--text-secondary);
   padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--radius-md);
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.main-nav a:hover {
+.nav-link-btn:hover, .nav-link-btn.active {
   color: var(--primary);
-  background: rgba(var(--primary), 0.1);
+  background: rgba(99, 102, 241, 0.1);
 }
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--border);
+  color: var(--text-primary);
+  box-shadow: none;
+}
+

@@ -3,6 +3,7 @@ import sys
 
 from app.core.config import settings
 
+
 def setup_logging():
     logging.basicConfig(
         stream=sys.stdout,

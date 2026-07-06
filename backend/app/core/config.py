@@ -1,8 +1,8 @@
-import os
 from typing import List, Union
 
 from pydantic import AnyHttpUrl, validator
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "Progression Tracker API"

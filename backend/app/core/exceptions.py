@@ -2,6 +2,7 @@ from typing import Any, Dict, Optional
 
 from fastapi import HTTPException, status
 
+
 class DetailedHTTPException(HTTPException):
     def __init__(
         self,
