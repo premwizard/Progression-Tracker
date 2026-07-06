@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../services/api';
 import './Header.css';
@@ -18,7 +18,7 @@ export const Header: React.FC = () => {
   
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const fetchNotifications = async () => {
+  const fetchNotifications = useCallback(async () => {
     if (isAuthenticated) {
       try {
         const data = await api.get<NotificationItem[]>('/notifications');
@@ -27,14 +27,14 @@ export const Header: React.FC = () => {
         console.error('Failed to fetch notifications:', err);
       }
     }
-  };
+  }, [isAuthenticated]);
 
   useEffect(() => {
     fetchNotifications();
     // Periodically sync alerts every 30 seconds
     const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
-  }, [isAuthenticated, view]);
+  }, [fetchNotifications, view]);
 
   // Handle closing dropdown when clicking outside
   useEffect(() => {
