@@ -8,6 +8,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from app.core.config import settings
 from app.database.base_model import Base
+import app.models.user  # noqa: F401
+import app.models.goal  # noqa: F401
+import app.models.activity  # noqa: F401
+import app.models.summary  # noqa: F401
 from app.database.session import get_db
 from app.main import app
 

@@ -1,70 +1,167 @@
 # 🚀 Progression Tracker
 
-An AI-powered goal planning, progress tracking, and productivity intelligence platform built for serious achievers. Progression Tracker connects your goals, tasks, and streaks into a single unified system, powered by an AI coach that remembers everything.
+**Progression Tracker** is an enterprise-grade, AI-powered goal planning, progress tracking, and productivity intelligence platform. Built with a modern microservices-ready monorepo structure, it bridges ambitious personal and professional goals, task execution, habit streaks, and AI coaching into a unified, cross-platform ecosystem.
 
-## ✨ Features
+---
 
-- **Goal Tracking**: Set ambitious goals with milestones. Track real-time progress with automatic completion calculation.
-- **AI Coach**: Your personal AI coach analyzes your patterns, streaks, and progress to deliver personalized, context-aware recommendations.
-- **Data Analytics**: Visualize your growth over days, weeks, and months with interactive bar charts and a GitHub-style consistency heatmap.
-- **Streak Engine**: Never break the chain. Daily streak tracking that rewards consistency and builds momentum.
-- **Command Palette**: Press `⌘K` anywhere to instantly search across goals, create tasks, or navigate the application.
-- **Premium UI**: Crafted with React, Tailwind CSS, and Framer Motion for a fluid, glassmorphic, and highly responsive experience.
+## 📌 Executive Overview (For LLMs / ChatGPT Prompting)
 
-## 🏗️ Architecture
+> **Quick Summary for AI Context:**
+> Progression Tracker is a full-stack goal management and productivity intelligence platform consisting of:
+> 1. **Backend**: Python 3.12+ FastAPI async REST API with SQLAlchemy 2.0 (Async), PostgreSQL, Redis rate-limiting/caching, Alembic migrations, and JWT authentication.
+> 2. **Web Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS v4, Framer Motion, and Lucide icons featuring a dark glassmorphic design system and a `⌘K` command palette.
+> 3. **Mobile App**: Cross-platform Flutter 3.x client (Web/Chrome, iOS, Android) powered by Riverpod state management, Dio HTTP client with JWT interceptors, and Hive local offline caching.
+> 4. **AI Coach & Goal Planner**: Intelligent task breakdown engine, structured milestone generator, habit coaching, and automated progress analytics.
 
-- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS v4, Framer Motion, Lucide Icons
-- **Backend**: Python 3.12, FastAPI, SQLAlchemy 2.0 (Async), PostgreSQL
-- **Mobile**: Flutter 3.44, Dart
-- **AI Integration**: Custom LangChain agents powered by Gemini 3.1 Pro (High)
-- **Deployment**: Docker, docker-compose
+---
 
-## 🚀 Getting Started
+## ✨ Comprehensive Features Breakdown
 
-### Prerequisites
-- Node.js 20+
-- Python 3.12+
-- Docker & Docker Compose
-- Flutter SDK (for mobile app)
+### 🎯 1. Goal & Milestone Management
+- **Hierarchical Goals**: Create long-term objectives with measurable milestones and sub-tasks.
+- **Dynamic Progress Engine**: Real-time progress percentage auto-calculated based on task completion and milestone weighting.
+- **Goal Categorization & Priority**: Organize goals by domain (Engineering, Career, Health, Learning) with priority tiering (High, Medium, Low).
+- **Status Lifecycle**: Track goals across distinct lifecycle stages (`Active`, `In Progress`, `Paused`, `Completed`, `Archived`).
 
-### Quick Start (Frontend Mock Mode)
-You can run the frontend immediately using our mock data engine:
+### 🤖 2. AI Coach & Intelligent Goal Planner
+- **Intelligent Goal Decomposition**: Converts high-level user intentions (e.g., *"Learn Python"*, *"Run a Marathon"*) into step-by-step actionable roadmaps and milestone blueprints.
+- **Context-Aware Coaching**: Delivers personalized recommendations, streak recovery plans, and momentum suggestions based on user completion velocity.
+- **Curated Learning & Habit Paths**: Pre-configured domain blueprints for programming, mobile engineering, fitness, and daily habits.
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Open `http://localhost:3000` to view the application.
+### 📊 3. Analytics & Productivity Engine
+- **GitHub-Style Consistency Heatmap**: Visual daily activity grid tracking completions, commits, and habit consistency over days, weeks, and months.
+- **Velocity & Completion Metrics**: Interactive charts and data visualizations powered by Recharts comparing target vs. actual completion rates.
+- **Streak Engine ("Don't Break the Chain")**: Daily streak tracking with freeze protections and milestone rewards to maintain user momentum.
 
-### Full Stack Setup (API + Database)
-To run the full stack with the FastAPI backend and PostgreSQL database:
+### 📋 4. Task Management & Kanban Board
+- **Task Boards**: Visual Kanban board (`To Do`, `In Progress`, `Completed`) tailored for daily execution.
+- **Goal Linking**: Direct association between micro-tasks and parent goals ensuring focused execution.
+- **Quick Status Transitions**: Interactive checkoffs and immediate progress ring recalculations.
 
-1. Copy `.env.example` to `.env` in the `backend/` directory.
-2. Start the services:
-```bash
-docker-compose up -d
-```
-3. The API will be available at `http://localhost:8000`. 
-4. API documentation (Swagger) is auto-generated at `http://localhost:8000/docs`.
+### ⚡ 5. Command Palette & Navigation
+- **Global `⌘K` / `Ctrl+K` Palette**: Instant hotkey access to search across all goals, create tasks, and switch views from anywhere in the app.
+- **Glassmorphic UI**: High-end dark aesthetic built with glassmorphic cards, Framer Motion micro-interactions, and skeleton loading states.
+
+### 📱 6. Multi-Platform Support (Flutter Mobile & Web)
+- **Shared Mobile Core**: Flutter application running seamlessly on Android, iOS, and Web (Chrome).
+- **Offline First**: Hive-based local storage cache keeping data available even without network connectivity.
+- **Reactive UI**: Riverpod-managed state ensuring instant UI synchronization across views.
+
+### 🔒 7. Security, Performance & Integrations
+- **Stateless Auth**: JWT-based Bearer token authentication with secure password hashing (Bcrypt).
+- **Rate Limiting & Caching**: Redis-backed sliding-window rate limiting to prevent abuse.
+- **Security Headers & Compression**: Automatic Gzip compression, CORS controls, HSTS, and XSS defense headers.
+- **External Integrations**: Webhook and GitHub integration endpoints for synchronizing repository activity with goal progress.
+
+---
+
+## 🏗️ Architecture & Tech Stack
+
+| Layer | Technology | Key Libraries & Modules |
+| :--- | :--- | :--- |
+| **Backend API** | Python 3.12 / FastAPI | SQLAlchemy 2.0 (Async), Pydantic v2, Alembic, Uvicorn, Passlib, PyJWT |
+| **Database & Cache**| PostgreSQL 15 & Redis 7 | Asyncpg, Redis-py |
+| **Web Frontend** | Next.js 15 (App Router) / React 19 | Tailwind CSS v4, Framer Motion, TanStack Query, Recharts, Lucide Icons, Zod |
+| **Mobile App** | Flutter 3.47+ / Dart | Flutter Riverpod, Dio, Hive / Hive Flutter, Google Fonts, FL Chart |
+| **DevOps / Infra** | Docker & Docker Compose | Multi-stage Dockerfiles, Postgres & Redis containers |
+
+---
 
 ## 📂 Project Structure
 
 ```
 .
-├── backend/          # FastAPI application
-│   ├── app/          # Core backend logic (auth, goals, analytics, ai)
-│   └── alembic/      # Database migrations
-├── frontend/         # Next.js frontend application
-│   ├── src/app/      # App Router pages (Dashboard, Goals, Tasks, etc)
-│   └── src/components/ # Shared UI components (CommandPalette, SkeletonLoader)
-├── mobile/           # Flutter native app (iOS & Android)
-└── Docs/             # Comprehensive project documentation
+├── backend/                  # FastAPI Application
+│   ├── app/
+│   │   ├── ai/               # AI goal decomposition & coaching endpoints
+│   │   ├── analytics/        # Streak calculation & heatmap metrics
+│   │   ├── api/v1/           # API routes (/auth, /goals, /tasks, /health, etc.)
+│   │   ├── auth/             # JWT auth, user registration, token services
+│   │   ├── core/             # App configs, security, dependency injection
+│   │   ├── database/         # Async engine, session maker, base models
+│   │   ├── goals/            # Goal & task services and routers
+│   │   ├── integrations/     # GitHub & third-party service sync
+│   │   ├── middleware/       # Rate limiting, logging, timing, security headers
+│   │   ├── models/           # SQLAlchemy ORM models (User, Goal, Task)
+│   │   └── notifications/    # In-app notifications & streak alerts
+│   ├── alembic/              # Database migration scripts
+│   ├── requirements.txt      # Python dependencies
+│   └── docker-compose.yml    # Multi-container orchestration
+│
+├── frontend/                 # Next.js 15 Web Application
+│   ├── src/
+│   │   ├── app/              # App Router routes (/dashboard, /goals, /tasks, /analytics, /assistant)
+│   │   ├── components/       # Shared UI, CommandPalette, ProgressRing, AI Assistant
+│   │   ├── context/          # Auth and global state contexts
+│   │   ├── services/         # API client & data fetchers
+│   │   └── lib/              # Utility helpers
+│   └── package.json          # Node dependencies and scripts
+│
+├── mobile/                   # Flutter Cross-Platform Client
+│   ├── lib/
+│   │   ├── core/             # Network (Dio) and storage (Hive) clients
+│   │   ├── screens/          # DashboardScreen, ItemDetailScreen
+│   │   ├── theme/            # AppTheme light & dark configurations
+│   │   └── widgets/          # ProgressCard, ProgressRing, StreakBadge
+│   └── pubspec.yaml          # Flutter dependencies
+│
+└── Docs/                     # 60+ modular technical design documents
 ```
 
-## 🎨 UI/UX Philosophy
+---
 
-Progression Tracker uses a custom **Glassmorphism** design system with a refined color palette (`var(--color-bg-base)`, `var(--color-primary)`, `var(--color-accent)`). We rely heavily on micro-interactions and smooth transitions (`framer-motion`) to ensure the platform feels alive, responsive, and premium.
+## 🚀 Running the Project
+
+### 1. Backend (FastAPI)
+
+#### Native Python:
+```powershell
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+*API & Docs:* `http://localhost:8000/docs`
+
+#### Docker Compose (includes DB & Redis):
+```powershell
+cd backend
+docker compose up -d
+```
+
+### 2. Frontend (Next.js)
+
+```powershell
+cd frontend
+npm install
+npm run dev
+```
+*Web App:* `http://localhost:3000`
+
+### 3. Mobile App (Flutter in Chrome)
+
+```powershell
+cd mobile
+flutter pub get
+flutter run -d chrome
+```
+
+---
+
+## 📡 API Overview (v1)
+
+| Route | Method | Description |
+| :--- | :--- | :--- |
+| `/api/v1/auth/register` | `POST` | Register a new user |
+| `/api/v1/auth/login` | `POST` | Authenticate and obtain JWT Bearer token |
+| `/api/v1/goals` | `GET / POST` | List active user goals / Create a new goal |
+| `/api/v1/goals/{id}` | `GET / PUT / DELETE` | Retrieve, update, or delete goal details |
+| `/api/v1/tasks` | `GET / POST` | Query tasks / Create task linked to a goal |
+| `/api/v1/analytics/stats` | `GET` | Retrieve streak counters and velocity data |
+| `/api/v1/analytics/heatmap` | `GET` | Retrieve daily activity heatmap dataset |
+| `/api/v1/ai/chat` | `POST` | AI Coach chat & structured goal roadmap generation |
+| `/api/v1/health` | `GET` | Service health status check |
+
+---
 
 ## 📄 License
 This project is proprietary and confidential. All rights reserved.

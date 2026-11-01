@@ -23,6 +23,8 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 import app.models.user  # noqa
 import app.models.goal  # noqa
+import app.models.activity  # noqa
+import app.models.summary  # noqa
 from app.database.base_model import Base  # noqa: E402
 
 target_metadata = Base.metadata
