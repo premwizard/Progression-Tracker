@@ -25,34 +25,36 @@ interface AuthContextType {
   setError: (error: string | null) => void;
 }
 
+const DEFAULT_USER: User = {
+  id: 'ee8d8906-8a8f-45b9-be84-d9fc46000ea1',
+  email: 'owner@progressiontracker.local',
+  full_name: 'Personal Owner',
+  is_active: true,
+};
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [view, setView] = useState<ViewType>('home');
+  const [user, setUser] = useState<User>(DEFAULT_USER);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [view, setView] = useState<ViewType>('dashboard');
   const [error, setError] = useState<string | null>(null);
 
   const fetchCurrentUser = async () => {
     try {
       const userData = await api.get<User>('/auth/me');
-      setUser(userData);
-      setView('dashboard');
+      if (userData) {
+        setUser(userData);
+      }
     } catch {
-      localStorage.removeItem('token');
-      setUser(null);
-      setView('home');
-    } finally {
-      setIsLoading(false);
+      setUser(DEFAULT_USER);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
     if (token) {
       fetchCurrentUser();
-    } else {
-      setIsLoading(false);
     }
   }, []);
 
@@ -64,11 +66,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         { username: email, password },
         true // URL Encoded
       );
-      localStorage.setItem('token', response.access_token);
-      await fetchCurrentUser();
+      if (response?.access_token) {
+        localStorage.setItem('token', response.access_token);
+        await fetchCurrentUser();
+      }
     } catch (err: any) {
       setError(err.message || 'Login failed');
-      throw err;
     }
   };
 
@@ -80,26 +83,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
         full_name: fullName || null,
       });
-      // Auto login after registration
       await login(email, password);
     } catch (err: any) {
       setError(err.message || 'Registration failed');
-      throw err;
     }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
-    setUser(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+    }
+    setUser(DEFAULT_USER);
     setError(null);
-    setView('home');
+    setView('dashboard');
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: !!user,
+        isAuthenticated: true, // Always authenticated as personal user
         isLoading,
         view,
         setView,

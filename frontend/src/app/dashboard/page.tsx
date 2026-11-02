@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
   Plus, Activity, LayoutDashboard, ChevronRight, Target, CheckSquare,
-  BrainCircuit, Flame, TrendingUp, ArrowRight, Sparkles
+  BrainCircuit, Flame, TrendingUp, ArrowRight, Sparkles, Clock
 } from 'lucide-react';
 import Link from 'next/link';
 import { ProgressCard } from '../../components/ui/ProgressCard';
 import { ProgressRing } from '../../components/ui/ProgressRing';
 import { SkeletonCard, SkeletonStat } from '../../components/ui/SkeletonLoader';
 import { useAuth } from '../../context/AuthContext';
+import { useTimer } from '../../context/TimerContext';
 
 const MOCK_DATA = [
   { id: '1', title: 'React Advanced Patterns', category: 'Engineering', progress: 68, streak: 12 },
@@ -43,6 +44,7 @@ function getGreeting() {
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const { openTimer, status: timerStatus, formattedDuration, activeActivity } = useTimer();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -77,6 +79,17 @@ export default function DashboardPage() {
           </div>
           {/* Quick actions */}
           <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => openTimer()}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-xl border transition-all ${
+                timerStatus !== 'idle'
+                  ? 'bg-primary/10 border-primary text-primary font-mono shadow-md shadow-primary/10'
+                  : 'border-border-subtle text-text-muted hover:border-primary/40 hover:text-text-main'
+              }`}
+            >
+              <Clock className={`w-3.5 h-3.5 ${timerStatus === 'running' ? 'text-primary animate-pulse' : ''}`} />
+              {timerStatus !== 'idle' ? `${activeActivity?.name || 'Session'}: ${formattedDuration}` : 'Start Timer'}
+            </button>
             <Link href="/goals"
               className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-medium text-white rounded-xl bg-primary hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all"
             >

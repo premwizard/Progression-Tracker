@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/floating_timer_bar.dart';
 import '../widgets/heatmap_grid.dart';
 import '../widgets/progress_card.dart';
 import '../widgets/progress_ring.dart';
+import 'timer_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -108,20 +110,41 @@ class DashboardScreen extends StatelessWidget {
                     'Active Tracks',
                     style: theme.textTheme.headlineSmall,
                   ),
-                  ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.add, size: 16, color: Colors.white), // lucide: plus
-                    label: const Text('New Track', style: TextStyle(color: Colors.white)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                  Row(
+                    children: [
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (_) => const TimerScreen()),
+                          );
+                        },
+                        icon: Icon(Icons.timer_outlined, size: 16, color: theme.colorScheme.primary),
+                        label: Text('Timer', style: TextStyle(color: theme.colorScheme.primary)),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: theme.colorScheme.primary),
+                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                          ),
+                        ),
                       ),
-                      elevation: 4,
-                      shadowColor: theme.colorScheme.primary.withValues(alpha: 0.4),
-                    ),
+                      const SizedBox(width: 8),
+                      ElevatedButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.add, size: 16, color: Colors.white), // lucide: plus
+                        label: const Text('New Track', style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: theme.colorScheme.primary,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(AppTheme.radiusLg),
+                          ),
+                          elevation: 4,
+                          shadowColor: theme.colorScheme.primary.withValues(alpha: 0.4),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -249,6 +272,7 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: const FloatingTimerBar(),
     );
   }
 }

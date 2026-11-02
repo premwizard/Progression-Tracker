@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
+import { useTimer } from '../../context/TimerContext';
 import { api } from '../../services/api';
 import {
   Bell, Rocket, LayoutDashboard, Target, CheckSquare, BrainCircuit,
-  Activity, LogOut, Search, Menu, X, Check, Trash2, ChevronRight
+  Activity, LogOut, Search, Menu, X, Check, Trash2, ChevronRight, Clock
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -30,6 +31,7 @@ const NAV_LINKS = [
 
 export const Header: React.FC = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const { openTimer, status: timerStatus, formattedDuration } = useTimer();
   const [notifications, setNotifications]   = useState<NotificationItem[]>([]);
   const [showNotifDropdown, setShowNotifDropdown] = useState(false);
   const [showMobileMenu, setShowMobileMenu]  = useState(false);
@@ -43,17 +45,25 @@ export const Header: React.FC = () => {
   const failCount   = useRef(0);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // ── Keyboard shortcut ⌘K / Ctrl+K ──────────────────────────────
+  // ── Keyboard shortcuts ⌘K / Ctrl+K and 'T' for Timer ───────────
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         setShowCommandPalette(prev => !prev);
+      } else if (
+        (e.key === 't' || e.key === 'T') &&
+        !e.metaKey &&
+        !e.ctrlKey &&
+        !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)
+      ) {
+        e.preventDefault();
+        openTimer();
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, []);
+  }, [openTimer]);
 
   // ── Close mobile menu on route change ───────────────────────────
   useEffect(() => { setShowMobileMenu(false); }, [pathname]);
@@ -159,6 +169,24 @@ export const Header: React.FC = () => {
                     <Search className="w-3.5 h-3.5" />
                     <span>Search</span>
                     <kbd className="text-[10px] opacity-60">⌘K</kbd>
+                  </button>
+
+                  {/* Focus Timer Button */}
+                  <button
+                    onClick={() => openTimer()}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg transition-all border ${
+                      timerStatus !== 'idle'
+                        ? 'border-primary/50 bg-primary/10 text-primary font-mono font-medium shadow-sm shadow-primary/10'
+                        : 'text-text-muted border-border-subtle hover:border-primary/30 hover:text-text-main'
+                    }`}
+                    aria-label="Focus timer"
+                    title="Focus Timer (T)"
+                  >
+                    <Clock className={`w-3.5 h-3.5 ${timerStatus === 'running' ? 'text-primary animate-pulse' : ''}`} />
+                    <span className="hidden sm:inline">
+                      {timerStatus !== 'idle' ? formattedDuration : 'Timer'}
+                    </span>
+                    <kbd className="hidden sm:inline text-[10px] opacity-60">T</kbd>
                   </button>
 
                   {/* Notifications */}

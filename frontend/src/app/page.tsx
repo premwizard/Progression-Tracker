@@ -263,10 +263,10 @@ export default function LandingPage() {
 
             {/* CTAs */}
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Link href="/register"
+              <Link href="/dashboard"
                 className="group inline-flex items-center gap-2 px-8 py-4 text-base font-semibold text-white rounded-xl bg-primary hover:bg-primary-hover shadow-xl shadow-primary/25 hover:shadow-primary/40 transition-all active:scale-[0.98]"
               >
-                Start for free
+                Open Dashboard
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link href="#demo"
@@ -346,8 +346,8 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/register" className="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-semibold text-white rounded-xl bg-primary hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all">
-                Try AI Coach free <ArrowRight className="w-4 h-4" />
+              <Link href="/dashboard" className="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-semibold text-white rounded-xl bg-primary hover:bg-primary-hover shadow-lg shadow-primary/20 transition-all">
+                Try AI Coach <ArrowRight className="w-4 h-4" />
               </Link>
             </motion.div>
 
@@ -485,7 +485,7 @@ export default function LandingPage() {
                         </li>
                       ))}
                     </ul>
-                    <Link href="/register"
+                    <Link href="/dashboard"
                       className={`block text-center py-3 rounded-xl text-sm font-semibold transition-all ${plan.highlight ? 'bg-white text-primary hover:bg-white/90' : 'bg-primary text-white hover:bg-primary-hover shadow-md shadow-primary/20'}`}
                     >
                       {plan.cta}
@@ -526,16 +526,16 @@ export default function LandingPage() {
                 Join thousands of achievers tracking goals and building momentum — starting today, for free.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                <Link href="/register"
+                <Link href="/dashboard"
                   className="group inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-semibold text-white rounded-xl bg-primary hover:bg-primary-hover shadow-xl shadow-primary/30 transition-all"
                 >
-                  Start for free
+                  Launch App
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <Link href="/login"
+                <Link href="/dashboard"
                   className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold rounded-xl border border-border-subtle text-text-main hover:bg-border-subtle/30 transition-all"
                 >
-                  Sign in
+                  Open Dashboard
                 </Link>
               </div>
             </div>

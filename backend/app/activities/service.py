@@ -104,6 +104,45 @@ async def list_activities(
     result = await db.execute(query)
     activities = result.scalars().all()
 
+    # Friction-free auto-seeding: if user has zero activities, seed starter activities
+    if not activities and not category and status == "active":
+        seed_defs = [
+            ActivityCreate(
+                name="Deep Work",
+                description="Focused coding, system design, or engineering work",
+                icon="code",
+                color="#3B82F6",
+                category="Engineering",
+                tracking_methods=["time"],
+                metric_unit="minutes",
+                daily_target=120.0,
+            ),
+            ActivityCreate(
+                name="Reading & Research",
+                description="Technical reading, papers, documentation, and books",
+                icon="book-open",
+                color="#10B981",
+                category="Learning",
+                tracking_methods=["time", "quantity"],
+                metric_unit="pages",
+                daily_target=20.0,
+            ),
+            ActivityCreate(
+                name="Workout & Health",
+                description="Fitness, running, lifting, or mobility training",
+                icon="activity",
+                color="#F97316",
+                category="Health",
+                tracking_methods=["time", "completion"],
+                metric_unit="minutes",
+                daily_target=45.0,
+            ),
+        ]
+        for s_def in seed_defs:
+            await create_activity(db, s_def, user_id)
+        result = await db.execute(query)
+        activities = result.scalars().all()
+
     today = datetime.now(timezone.utc).date()
     enriched_activities = []
     for act in activities:

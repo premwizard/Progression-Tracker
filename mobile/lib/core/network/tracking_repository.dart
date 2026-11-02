@@ -4,14 +4,27 @@ import '../models/session.dart';
 import 'dio_client.dart';
 
 class TrackingRepository {
-  final DioClient _client;
+  final DioClient? _client;
 
-  TrackingRepository({DioClient? client}) : _client = client ?? DioClient();
+  TrackingRepository({DioClient? client}) : _client = client;
 
   // --- Method 1: Time Tracking ---
 
   Future<ActivitySession> startSession(String activityId, {String? notes}) async {
-    final response = await _client.dio.post(
+    if (_client == null) {
+      final now = DateTime.now();
+      return ActivitySession(
+        id: 'local-session-${now.millisecondsSinceEpoch}',
+        activityId: activityId,
+        userId: 'personal-owner',
+        startTime: now,
+        status: 'running',
+        notes: notes,
+        createdAt: now,
+        updatedAt: now,
+      );
+    }
+    final response = await _client!.dio.post(
       '/tracking/sessions/start',
       data: {'activity_id': activityId, if (notes != null) 'notes': notes},
     );
@@ -19,7 +32,20 @@ class TrackingRepository {
   }
 
   Future<ActivitySession> pauseSession(String sessionId, {String? notes}) async {
-    final response = await _client.dio.post(
+    if (_client == null) {
+      final now = DateTime.now();
+      return ActivitySession(
+        id: sessionId,
+        activityId: 'mock-act',
+        userId: 'personal-owner',
+        startTime: now.subtract(const Duration(minutes: 10)),
+        status: 'paused',
+        notes: notes,
+        createdAt: now,
+        updatedAt: now,
+      );
+    }
+    final response = await _client!.dio.post(
       '/tracking/sessions/$sessionId/pause',
       data: {if (notes != null) 'notes': notes},
     );
@@ -27,12 +53,39 @@ class TrackingRepository {
   }
 
   Future<ActivitySession> resumeSession(String sessionId) async {
-    final response = await _client.dio.post('/tracking/sessions/$sessionId/resume');
+    if (_client == null) {
+      final now = DateTime.now();
+      return ActivitySession(
+        id: sessionId,
+        activityId: 'mock-act',
+        userId: 'personal-owner',
+        startTime: now.subtract(const Duration(minutes: 15)),
+        status: 'running',
+        createdAt: now,
+        updatedAt: now,
+      );
+    }
+    final response = await _client!.dio.post('/tracking/sessions/$sessionId/resume');
     return ActivitySession.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<ActivitySession> finishSession(String sessionId, {String? notes}) async {
-    final response = await _client.dio.post(
+    if (_client == null) {
+      final now = DateTime.now();
+      return ActivitySession(
+        id: sessionId,
+        activityId: 'mock-act',
+        userId: 'personal-owner',
+        startTime: now.subtract(const Duration(minutes: 30)),
+        endTime: now,
+        durationSeconds: 1800,
+        status: 'completed',
+        notes: notes,
+        createdAt: now,
+        updatedAt: now,
+      );
+    }
+    final response = await _client!.dio.post(
       '/tracking/sessions/$sessionId/finish',
       data: {if (notes != null) 'notes': notes},
     );
@@ -40,7 +93,19 @@ class TrackingRepository {
   }
 
   Future<ActivitySession> cancelSession(String sessionId) async {
-    final response = await _client.dio.post('/tracking/sessions/$sessionId/cancel');
+    if (_client == null) {
+      final now = DateTime.now();
+      return ActivitySession(
+        id: sessionId,
+        activityId: 'mock-act',
+        userId: 'personal-owner',
+        startTime: now,
+        status: 'cancelled',
+        createdAt: now,
+        updatedAt: now,
+      );
+    }
+    final response = await _client!.dio.post('/tracking/sessions/$sessionId/cancel');
     return ActivitySession.fromJson(response.data as Map<String, dynamic>);
   }
 
@@ -50,6 +115,22 @@ class TrackingRepository {
     required DateTime endTime,
     String? notes,
   }) async {
+    if (_client == null) {
+      final now = DateTime.now();
+      final dur = endTime.difference(startTime).inSeconds;
+      return ActivitySession(
+        id: 'manual-${now.millisecondsSinceEpoch}',
+        activityId: activityId,
+        userId: 'personal-owner',
+        startTime: startTime,
+        endTime: endTime,
+        durationSeconds: dur > 0 ? dur : 0,
+        status: 'completed',
+        notes: notes,
+        createdAt: now,
+        updatedAt: now,
+      );
+    }
     final response = await _client.dio.post(
       '/tracking/sessions/manual',
       data: {
@@ -63,7 +144,8 @@ class TrackingRepository {
   }
 
   Future<ActivitySession?> getActiveSession({String? activityId}) async {
-    final response = await _client.dio.get(
+    if (_client == null) return null;
+    final response = await _client!.dio.get(
       '/tracking/sessions/active',
       queryParameters: {if (activityId != null) 'activity_id': activityId},
     );
@@ -72,7 +154,8 @@ class TrackingRepository {
   }
 
   Future<List<ActivitySession>> listSessions({String? activityId, int limit = 50, int offset = 0}) async {
-    final response = await _client.dio.get(
+    if (_client == null) return [];
+    final response = await _client!.dio.get(
       '/tracking/sessions',
       queryParameters: {
         if (activityId != null) 'activity_id': activityId,
@@ -92,7 +175,21 @@ class TrackingRepository {
     DateTime? logDate,
     String? notes,
   }) async {
-    final response = await _client.dio.post(
+    if (_client == null) {
+      final now = DateTime.now();
+      return ActivityLog(
+        id: 'mock-qty-${now.millisecondsSinceEpoch}',
+        activityId: activityId,
+        userId: 'personal-owner',
+        logDate: logDate ?? now,
+        trackingMethod: 'quantity',
+        quantityValue: quantityValue,
+        isCompleted: false,
+        notes: notes,
+        createdAt: now,
+      );
+    }
+    final response = await _client!.dio.post(
       '/tracking/quantity',
       data: {
         'activity_id': activityId,
@@ -112,7 +209,21 @@ class TrackingRepository {
     DateTime? logDate,
     String? notes,
   }) async {
-    final response = await _client.dio.post(
+    if (_client == null) {
+      final now = DateTime.now();
+      return ActivityLog(
+        id: 'mock-comp-${now.millisecondsSinceEpoch}',
+        activityId: activityId,
+        userId: 'personal-owner',
+        logDate: logDate ?? now,
+        trackingMethod: 'completion',
+        quantityValue: null,
+        isCompleted: isCompleted,
+        notes: notes,
+        createdAt: now,
+      );
+    }
+    final response = await _client!.dio.post(
       '/tracking/completion',
       data: {
         'activity_id': activityId,
@@ -127,7 +238,8 @@ class TrackingRepository {
   // --- Method 4: Automatic Tracking (Screen Time) ---
 
   Future<void> uploadScreenTimeBatch(List<Map<String, dynamic>> items) async {
-    await _client.dio.post('/tracking/screentime/batch', data: {'items': items});
+    if (_client == null) return;
+    await _client!.dio.post('/tracking/screentime/batch', data: {'items': items});
   }
 }
 

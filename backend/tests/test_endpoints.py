@@ -79,3 +79,34 @@ async def test_auth_and_goals_flow(client: AsyncClient):
     # Verify parent progress automatically recalculated to 100%
     goal_response_3 = await client.get(f"/api/v1/goals/{goal_id}", headers=headers)
     assert goal_response_3.json()["progress"] == 100.0
+
+
+@pytest.mark.asyncio
+async def test_frictionless_no_auth_access(client: AsyncClient):
+    """Verify that users can access activities, heatmaps, and tracking with NO auth headers."""
+    # 1. Activities list without auth header
+    res = await client.get("/api/v1/activities")
+    assert res.status_code == 200
+    assert isinstance(res.json(), list)
+
+    # 2. Overall heatmap without auth header
+    heatmap_res = await client.get("/api/v1/heatmaps/overall")
+    assert heatmap_res.status_code == 200
+    grid = heatmap_res.json()
+    assert grid["total_days"] == 365
+    assert len(grid["cells"]) == 365
+
+    # 3. Create activity without auth header
+    create_res = await client.post(
+        "/api/v1/activities",
+        json={
+            "name": "Meditation",
+            "category": "Health",
+            "tracking_methods": ["time"],
+            "daily_target": 20.0,
+        },
+    )
+    assert create_res.status_code == 201
+    act = create_res.json()
+    assert act["name"] == "Meditation"
+
