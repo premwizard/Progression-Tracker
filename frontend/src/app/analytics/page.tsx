@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, TrendingUp, Flame, Target, ArrowUp, ArrowDown, Minus, Zap, Calendar } from 'lucide-react';
 import { ProgressRing } from '../../components/ui/ProgressRing';
+import { HeatmapGrid } from '../../components/heatmap/HeatmapGrid';
 
 type Range = '7d' | '30d' | '90d';
 
@@ -41,23 +42,6 @@ const GOALS_PROGRESS = [
   { title: 'System Design Interview', progress: 34, trend: +8, category: 'Career', color: 'bg-purple-500' },
   { title: 'Marathon Training', progress: 85, trend: +3, category: 'Health', color: 'bg-emerald-500' },
   { title: 'French A2 Level', progress: 15, trend: -2, category: 'Language', color: 'bg-orange-500' },
-];
-
-const STREAK_HEATMAP = Array.from({ length: 52 }, (_, week) =>
-  Array.from({ length: 7 }, (_, day) => {
-    const rand = Math.random();
-    if (week > 48) return rand > 0.3 ? Math.ceil(rand * 4) : 0;
-    if (week > 40) return rand > 0.4 ? Math.ceil(rand * 3) : 0;
-    return rand > 0.55 ? Math.ceil(rand * 2) : 0;
-  })
-);
-
-const HEAT_COLORS = [
-  'bg-border-subtle/30',
-  'bg-primary/20',
-  'bg-primary/40',
-  'bg-primary/70',
-  'bg-primary',
 ];
 
 const containerVariants = {
@@ -219,39 +203,9 @@ export default function AnalyticsPage() {
         </div>
       </motion.div>
 
-      {/* Activity heatmap */}
-      <motion.div variants={itemVariants} initial="hidden" animate="show" className="p-6 glass rounded-2xl border border-border-subtle">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-lg font-semibold text-text-main">Activity Heatmap</h2>
-            <p className="text-sm text-text-muted">Your consistency over the last 12 months</p>
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-text-muted">
-            <span>Less</span>
-            {HEAT_COLORS.map((c, i) => (
-              <div key={i} className={`w-3 h-3 rounded-sm ${c}`} />
-            ))}
-            <span>More</span>
-          </div>
-        </div>
-        <div className="flex gap-1 overflow-x-auto pb-2">
-          {STREAK_HEATMAP.map((week, wi) => (
-            <div key={wi} className="flex flex-col gap-1">
-              {week.map((intensity, di) => (
-                <div
-                  key={di}
-                  className={`w-3 h-3 rounded-sm cursor-default transition-opacity hover:opacity-70 ${HEAT_COLORS[intensity]}`}
-                  title={`${intensity > 0 ? `${intensity} activity level` : 'No activity'}`}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="flex justify-between mt-3 text-xs text-text-muted">
-          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span>
-          <span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
-          <span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
-        </div>
+      {/* Real Progression Consistency Heatmap Engine */}
+      <motion.div variants={itemVariants} initial="hidden" animate="show">
+        <HeatmapGrid />
       </motion.div>
 
       {/* Overall ring summary */}

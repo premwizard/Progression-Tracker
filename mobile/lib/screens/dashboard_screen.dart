@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/heatmap_grid.dart';
 import '../widgets/progress_card.dart';
 import '../widgets/progress_ring.dart';
 
@@ -91,6 +92,11 @@ class DashboardScreen extends StatelessWidget {
                   ],
                 ),
               ),
+              
+              const SizedBox(height: AppTheme.spacingLg),
+
+              // Consistency Progression Heatmap (GitHub-Style 365 Days)
+              const HeatmapCard(),
               
               const SizedBox(height: AppTheme.spacingXl),
               

@@ -2,6 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/core/models/activity.dart';
 import 'package:mobile/core/models/session.dart';
+import 'package:mobile/core/network/heatmap_repository.dart';
+import 'package:mobile/core/providers/heatmap_providers.dart';
 import 'package:mobile/main.dart';
 
 void main() {
@@ -61,12 +63,15 @@ void main() {
 
   testWidgets('ProgressionTrackerApp widget smoke test', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const ProviderScope(
-        child: ProgressionTrackerApp(),
+      ProviderScope(
+        overrides: [
+          heatmapRepositoryProvider.overrideWithValue(HeatmapRepository()),
+        ],
+        child: const ProgressionTrackerApp(),
       ),
     );
 
-    await tester.pump();
+    await tester.pumpAndSettle();
     expect(find.text('DASHBOARD'), findsOneWidget);
   });
 }
