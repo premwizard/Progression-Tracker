@@ -682,3 +682,4 @@ function generateFallbackHeatmap(year: number | null): HeatmapGridData {
     cells,
   };
 }
+

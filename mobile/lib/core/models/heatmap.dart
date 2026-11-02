@@ -343,3 +343,4 @@ class HeatmapDrilldownResponse {
     'activities': activities.map((a) => a.toJson()).toList(),
   };
 }
+

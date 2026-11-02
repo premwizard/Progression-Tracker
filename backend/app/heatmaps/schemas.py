@@ -108,3 +108,4 @@ class RebuildSummaryRequest(BaseModel):
 class RebuildSummaryResponse(BaseModel):
     recalculated_days: int
     message: str
+

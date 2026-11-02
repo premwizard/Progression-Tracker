@@ -112,3 +112,4 @@ async def rebuild_summaries(
         recalculated_days=count,
         message=f"Successfully synchronized {count} daily summaries and streak counters.",
     )
+
