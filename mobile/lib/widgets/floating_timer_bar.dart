@@ -162,3 +162,4 @@ class FloatingTimerBar extends ConsumerWidget {
     return AppTheme.darkPrimary;
   }
 }
+

@@ -413,3 +413,4 @@ export const TimerModal: React.FC = () => {
     </AnimatePresence>
   );
 };
+

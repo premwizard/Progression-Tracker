@@ -118,3 +118,4 @@ export const FloatingTimerBar: React.FC = () => {
     </AnimatePresence>
   );
 };
+
