@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from sqlalchemy.exc import SQLAlchemyError
 
+
 from app.api.v1.api import api_router
 from app.core.config import settings
 from app.middleware.logging import LoggingMiddleware
