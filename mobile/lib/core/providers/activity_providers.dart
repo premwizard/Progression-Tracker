@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/activity.dart';
 import '../models/session.dart';
 import '../network/activity_repository.dart';
+import '../network/dio_client.dart';
 import '../network/tracking_repository.dart';
 
 // --- Repositories ---

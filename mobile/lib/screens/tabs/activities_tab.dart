@@ -567,7 +567,7 @@ class _ActivitiesTabState extends ConsumerState<ActivitiesTab> {
                                     TextButton.icon(
                                       style: TextButton.styleFrom(
                                         visualDensity: VisualDensity.compact,
-                                        foregroundColor: act.todayProgress.completed ? Colors.emerald : theme.textTheme.bodyMedium?.color,
+                                        foregroundColor: act.todayProgress.completed ? const Color(0xFF10B981) : theme.textTheme.bodyMedium?.color,
                                       ),
                                       onPressed: () async {
                                         final newStatus = !act.todayProgress.completed;

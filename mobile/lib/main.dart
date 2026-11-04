@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'screens/main_navigation_screen.dart';
 import 'theme/app_theme.dart';
-import 'screens/dashboard_screen.dart';
 
 void main() {
   runApp(
@@ -22,7 +22,7 @@ class ProgressionTrackerApp extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
-      home: const DashboardScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }

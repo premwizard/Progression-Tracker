@@ -5,7 +5,13 @@ import '../network/heatmap_repository.dart';
 
 // Repository Provider
 final heatmapRepositoryProvider = Provider<HeatmapRepository>((ref) {
-  return HeatmapRepository(client: DioClient());
+  DioClient? client;
+  try {
+    client = DioClient();
+  } catch (_) {
+    client = null;
+  }
+  return HeatmapRepository(client: client);
 });
 
 // Selected Year Filter (null = past 365 rolling days)

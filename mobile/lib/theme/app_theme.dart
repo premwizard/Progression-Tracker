@@ -7,8 +7,11 @@ class AppTheme {
   static const double spacingMd = 16.0;
   static const double spacingLg = 24.0;
   static const double spacingXl = 32.0;
+  static const double radiusMd = 8.0;
   static const double radiusLg = 12.0; // rounded-xl equivalent approx
   static const double radiusXl = 16.0; // rounded-2xl equivalent
+
+  static const Color primaryOrange = Color(0xFFF97316);
 
   // --- Dark Mode Colors ---
   static const Color darkBgBase = Color(0xFF171717);

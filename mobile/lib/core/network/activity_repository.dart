@@ -197,4 +197,24 @@ class ActivityRepository {
     }
     return getActivityById(id);
   }
+
+  Future<void> deleteActivity(String id) async {
+    if (_client != null) {
+      try {
+        await _client.dio.delete('/activities/$id');
+      } catch (_) {
+        await HiveStorage.addToSyncQueue(SyncQueueItem(
+          id: '${DateTime.now().millisecondsSinceEpoch}_delete_$id',
+          endpoint: '/activities/$id',
+          method: 'DELETE',
+          payload: {},
+          timestamp: DateTime.now(),
+        ));
+      }
+    }
+
+    final currentCached = HiveStorage.getCachedActivities();
+    currentCached.removeWhere((a) => a['id'] == id);
+    await HiveStorage.cacheActivities(currentCached);
+  }
 }

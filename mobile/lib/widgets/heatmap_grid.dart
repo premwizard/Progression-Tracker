@@ -236,13 +236,17 @@ class HeatmapGrid extends StatelessWidget {
 
 /// Full card container embedding the Heatmap with activity filters, streak metrics, and legend.
 class HeatmapCard extends ConsumerWidget {
-  const HeatmapCard({super.key});
+  final String? selectedActivityId;
+
+  const HeatmapCard({super.key, this.selectedActivityId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final heatmapAsync = ref.watch(heatmapGridDataProvider);
+    final heatmapAsync = selectedActivityId != null
+        ? ref.watch(heatmapRepositoryProvider).getActivityHeatmap(selectedActivityId!)
+        : ref.watch(heatmapGridDataProvider);
     final activitiesAsync = ref.watch(activitiesProvider);
-    final selectedActivityId = ref.watch(heatmapSelectedActivityIdProvider);
+    final activeSelectedActivityId = selectedActivityId ?? ref.watch(heatmapSelectedActivityIdProvider);
     final selectedYear = ref.watch(heatmapYearFilterProvider);
 
     return Container(

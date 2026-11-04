@@ -79,7 +79,7 @@ class AnalyticsSettingsTab extends ConsumerWidget {
                     child: _buildMetricCard(
                       theme: theme,
                       icon: Icons.check_circle_outline_rounded,
-                      iconColor: Colors.emerald,
+                      iconColor: const Color(0xFF10B981),
                       value: '$totalCompletedTasks',
                       label: 'Tasks Done',
                     ),
@@ -128,14 +128,14 @@ class AnalyticsSettingsTab extends ConsumerWidget {
                           decoration: BoxDecoration(
                             color: syncState.pendingCount > 0
                                 ? Colors.amber.withValues(alpha: 0.15)
-                                : Colors.emerald.withValues(alpha: 0.15),
+                                : const Color(0xFF10B981).withValues(alpha: 0.15),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             syncState.pendingCount > 0
                                 ? Icons.sync_problem_rounded
                                 : Icons.cloud_done_rounded,
-                            color: syncState.pendingCount > 0 ? Colors.amber : Colors.emerald,
+                            color: syncState.pendingCount > 0 ? Colors.amber : const Color(0xFF10B981),
                             size: 22,
                           ),
                         ),
@@ -243,12 +243,12 @@ class AnalyticsSettingsTab extends ConsumerWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                           decoration: BoxDecoration(
-                            color: Colors.emerald.withValues(alpha: 0.15),
+                            color: const Color(0xFF10B981).withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(6),
                           ),
                           child: const Text(
                             'Active',
-                            style: TextStyle(color: Colors.emerald, fontSize: 10, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Color(0xFF10B981), fontSize: 10, fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],
