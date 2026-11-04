@@ -273,7 +273,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
             child: CircularProgressIndicator(
               value: state.status == TimerStatus.idle
                   ? 0.0
-                  : (state.targetProgressPercent > 0 ? (state.targetProgressPercent / 100.0) : null),
+                  : (state.targetProgressPercent / 100.0).clamp(0.0, 1.0),
               strokeWidth: 8,
               backgroundColor: const Color(0xFF262626),
               valueColor: AlwaysStoppedAnimation<Color>(isPaused ? Colors.amber : color),

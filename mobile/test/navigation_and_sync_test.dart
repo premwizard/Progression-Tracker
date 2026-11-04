@@ -13,6 +13,7 @@ import 'package:mobile/core/services/sync_service.dart';
 import 'package:mobile/core/services/timer_service.dart';
 import 'package:mobile/core/storage/hive_storage.dart';
 import 'package:mobile/screens/main_navigation_screen.dart';
+import 'package:mobile/widgets/floating_timer_bar.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -115,6 +116,7 @@ void main() {
         method: 'POST',
         payload: {'activity_id': 'act-1', 'quantity_value': 10.0},
       );
+      await notifier.syncNow();
 
       // In mock mode without client, sync completes immediately
       expect(notifier.state.isSyncing, false);
@@ -176,16 +178,17 @@ void main() {
     });
 
     testWidgets('FloatingTimerBar appears when timer is active on dashboard and hides on timer tab', (tester) async {
-      final runningTimer = TimerState(
-        status: TimerStatus.running,
+      final pausedTimer = TimerState(
+        status: TimerStatus.paused,
         activityId: 'act-1',
         activityName: 'Deep Work Focus',
         activityColor: '#3B82F6',
         startTime: DateTime.now().subtract(const Duration(minutes: 15)),
-        accumulatedPauseSeconds: 0,
+        currentPauseStartTime: DateTime.now(),
+        pausedDurationSeconds: 0,
       );
 
-      await tester.pumpWidget(createWidgetTree(customTimerState: runningTimer));
+      await tester.pumpWidget(createWidgetTree(customTimerState: pausedTimer));
       await tester.pumpAndSettle();
 
       // On Tab 0 (Dashboard), floating mini-timer bar is visible

@@ -169,10 +169,14 @@ class TimerNotifier extends StateNotifier<TimerState> {
   final TrackingRepository _trackingRepo;
   Timer? _ticker;
 
-  TimerNotifier({TrackingRepository? trackingRepo})
+  TimerNotifier({TrackingRepository? trackingRepo, TimerState? initialState})
       : _trackingRepo = trackingRepo ?? TrackingRepository(),
-        super(TimerState.initial()) {
-    _restoreSavedSession();
+        super(initialState ?? TimerState.initial()) {
+    if (initialState == null) {
+      _restoreSavedSession();
+    } else if (initialState.status == TimerStatus.running) {
+      _startTicker();
+    }
   }
 
   void _restoreSavedSession() {

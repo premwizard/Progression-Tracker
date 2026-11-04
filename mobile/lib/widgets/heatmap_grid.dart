@@ -243,7 +243,7 @@ class HeatmapCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final heatmapAsync = selectedActivityId != null
-        ? ref.watch(heatmapRepositoryProvider).getActivityHeatmap(selectedActivityId!)
+        ? ref.watch(activityHeatmapDataProvider(selectedActivityId!))
         : ref.watch(heatmapGridDataProvider);
     final activitiesAsync = ref.watch(activitiesProvider);
     final activeSelectedActivityId = selectedActivityId ?? ref.watch(heatmapSelectedActivityIdProvider);
@@ -754,4 +754,7 @@ class _DayDrilldownSheet extends ConsumerWidget {
     return names[(weekday - 1) % 7];
   }
 }
+
+/// Backward compatibility alias for HeatmapCard
+typedef HeatmapGridWidget = HeatmapCard;
 

@@ -23,6 +23,14 @@ final heatmapSelectedActivityIdProvider = StateProvider<String?>((ref) => null);
 // Selected Date for Drilldown Inspector
 final heatmapSelectedDateProvider = StateProvider<DateTime?>((ref) => null);
 
+// Activity-specific Heatmap Data Provider
+final activityHeatmapDataProvider =
+    FutureProvider.family<HeatmapGridData, String>((ref, activityId) async {
+  final repo = ref.watch(heatmapRepositoryProvider);
+  final year = ref.watch(heatmapYearFilterProvider);
+  return repo.getActivityHeatmap(activityId, year: year);
+});
+
 // Heatmap Grid Data Provider (recomputes when year or activity filter changes)
 final heatmapGridDataProvider = FutureProvider<HeatmapGridData>((ref) async {
   final repo = ref.watch(heatmapRepositoryProvider);

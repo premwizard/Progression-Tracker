@@ -107,7 +107,7 @@ class DashboardTab extends ConsumerWidget {
                   ),
                   child: Row(
                     children: [
-                      ProgressRing(progress: overallProgress.round(), size: 80, strokeWidth: 8),
+                      ProgressRing(progress: overallProgress.toDouble(), size: 80, strokeWidth: 8),
                       const SizedBox(width: AppTheme.spacingLg),
                       Expanded(
                         child: Column(
@@ -134,7 +134,7 @@ class DashboardTab extends ConsumerWidget {
                 const SizedBox(height: AppTheme.spacingLg),
 
                 // Consistency Progression Heatmap
-                const HeatmapGridWidget(),
+                const HeatmapCard(),
 
                 const SizedBox(height: AppTheme.spacingLg),
 

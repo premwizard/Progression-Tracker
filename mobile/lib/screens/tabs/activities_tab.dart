@@ -322,7 +322,7 @@ class _ActivitiesTabState extends ConsumerState<ActivitiesTab> {
                   logDate: DateTime.now(),
                 );
                 await ref.read(activitiesProvider.notifier).loadActivities();
-                ref.invalidate(heatmapOverallProvider);
+                ref.invalidate(heatmapGridDataProvider);
                 if (context.mounted) Navigator.pop(context);
               },
               child: const Text('Log Progress'),
@@ -577,7 +577,7 @@ class _ActivitiesTabState extends ConsumerState<ActivitiesTab> {
                                           logDate: DateTime.now(),
                                         );
                                         await ref.read(activitiesProvider.notifier).loadActivities();
-                                        ref.invalidate(heatmapOverallProvider);
+                                        ref.invalidate(heatmapGridDataProvider);
                                       },
                                       icon: Icon(
                                         act.todayProgress.completed ? Icons.check_circle : Icons.radio_button_unchecked,
