@@ -6,11 +6,23 @@ import '../network/tracking_repository.dart';
 
 // --- Repositories ---
 final activityRepositoryProvider = Provider<ActivityRepository>((ref) {
-  return ActivityRepository();
+  DioClient? client;
+  try {
+    client = DioClient();
+  } catch (_) {
+    client = null;
+  }
+  return ActivityRepository(client: client);
 });
 
 final trackingRepositoryProvider = Provider<TrackingRepository>((ref) {
-  return TrackingRepository();
+  DioClient? client;
+  try {
+    client = DioClient();
+  } catch (_) {
+    client = null;
+  }
+  return TrackingRepository(client: client);
 });
 
 // --- Activities State ---

@@ -8,7 +8,14 @@ import '../core/services/timer_service.dart';
 import '../theme/app_theme.dart';
 
 class TimerScreen extends ConsumerStatefulWidget {
-  const TimerScreen({super.key});
+  final String? initialActivityId;
+  final bool isTab;
+
+  const TimerScreen({
+    super.key,
+    this.initialActivityId,
+    this.isTab = false,
+  });
 
   @override
   ConsumerState<TimerScreen> createState() => _TimerScreenState();
@@ -29,6 +36,20 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     final timerState = ref.watch(timerProvider);
     final activitiesAsync = ref.watch(activitiesProvider);
 
+    // Auto-select initial activity if specified and idle
+    if (widget.initialActivityId != null &&
+        _selectedActivity == null &&
+        timerState.status == TimerStatus.idle) {
+      activitiesAsync.whenData((list) {
+        final match = list.where((a) => a.id == widget.initialActivityId).firstOrNull;
+        if (match != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) setState(() => _selectedActivity = match);
+          });
+        }
+      });
+    }
+
     // Sync selected activity with timer state if running
     final isRunning = timerState.status == TimerStatus.running;
     final isPaused = timerState.status == TimerStatus.paused;
@@ -44,6 +65,7 @@ class _TimerScreenState extends ConsumerState<TimerScreen> {
     return Scaffold(
       backgroundColor: AppTheme.darkBgBase,
       appBar: AppBar(
+        automaticallyImplyLeading: !widget.isTab,
         title: Text(
           'Focus Timer',
           style: GoogleFonts.outfit(fontSize: 18, fontWeight: FontWeight.w700),

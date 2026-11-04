@@ -8,7 +8,9 @@ import '../theme/app_theme.dart';
 
 /// Floating mini-timer bar displayed persistently at the bottom when a timer is running or paused.
 class FloatingTimerBar extends ConsumerWidget {
-  const FloatingTimerBar({super.key});
+  final VoidCallback? onExpand;
+
+  const FloatingTimerBar({super.key, this.onExpand});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,9 +29,13 @@ class FloatingTimerBar extends ConsumerWidget {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const TimerScreen()),
-              );
+              if (onExpand != null) {
+                onExpand!();
+              } else {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const TimerScreen()),
+                );
+              }
             },
             borderRadius: BorderRadius.circular(16),
             child: Container(
